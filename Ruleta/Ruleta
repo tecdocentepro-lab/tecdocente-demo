@@ -1,0 +1,2952 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TecDocente Pro • Ruleta Escolar Interactiva</title>
+  <meta name="author" content="Mtro. Jorge Luis Meza Aldana">
+  <meta name="description" content="Herramienta gratuita 100% offline para participaciones y dinámicas en aula. Desarrollada por TecDocente Pro.">
+  <meta name="theme-color" content="#060c1f">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ==========================================================
+   TECDOCENTE PRO • RULETA ESCOLAR - ESTILOS VISUALES DARK TECH
+   ========================================================== */
+
+:root {
+  --bg-dark: #060c1f;
+  --bg-card: rgba(13, 25, 58, 0.88);
+  --bg-card-hover: rgba(20, 38, 84, 0.95);
+  --card-border: rgba(56, 189, 248, 0.22);
+  --card-border-hover: rgba(56, 189, 248, 0.45);
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  
+  --primary: #0ea5e9;
+  --primary-hover: #0284c7;
+  --primary-glow: rgba(14, 165, 233, 0.45);
+  
+  --accent: #10b981;
+  --accent-hover: #059669;
+  --accent-glow: rgba(16, 185, 129, 0.4);
+  
+  --secondary: #1e293b;
+  --secondary-hover: #334155;
+  
+  --danger: #ef4444;
+  --danger-hover: #dc2626;
+  
+  --warning: #f59e0b;
+  --warning-hover: #d97706;
+  
+  --gold: #fbbf24;
+  --gold-glow: rgba(251, 191, 36, 0.5);
+
+  --font-main: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-fun: 'Fredoka', cursive, sans-serif;
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-full: 9999px;
+  
+  --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 15px 35px -5px rgba(2, 6, 23, 0.65);
+  --shadow-glow: 0 0 28px rgba(14, 165, 233, 0.35);
+}
+
+/* Reset & Base */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: var(--bg-dark);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Animated Ambient Blobs + Subtle Tech Grid */
+.app-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(56, 189, 248, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(56, 189, 248, 0.03) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+
+.blob {
+  position: absolute;
+  filter: blur(90px);
+  opacity: 0.32;
+  border-radius: 50%;
+  animation: float 20s infinite alternate ease-in-out;
+}
+
+.blob-1 {
+  width: 520px;
+  height: 520px;
+  background: #1d4ed8;
+  top: -120px;
+  left: -100px;
+  animation-duration: 18s;
+}
+
+.blob-2 {
+  width: 620px;
+  height: 620px;
+  background: #4338ca;
+  bottom: -160px;
+  right: -100px;
+  animation-duration: 22s;
+}
+
+.blob-3 {
+  width: 420px;
+  height: 420px;
+  background: #00f2fe;
+  top: 38%;
+  left: 30%;
+  opacity: 0.22;
+  animation-duration: 25s;
+}
+
+@keyframes float {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(60px, 40px) scale(1.1); }
+  100% { transform: translate(-40px, 70px) scale(0.95); }
+}
+
+/* App Container */
+.app-container {
+  max-width: 1380px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 1.25rem 1.5rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+/* Header */
+.main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding-bottom: 1.1rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--card-border);
+}
+
+.logo-group {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.logo-svg-wrap {
+  width: 58px;
+  height: 58px;
+  flex-shrink: 0;
+  border-radius: 16px;
+  background: linear-gradient(145deg, rgba(14, 165, 233, 0.18), rgba(13, 25, 58, 0.95));
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  box-shadow:
+    0 0 22px rgba(14, 165, 233, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  animation: gentle-wobble 5s ease-in-out infinite;
+}
+
+.logo-svg-wrap svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+@keyframes gentle-wobble {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-3px) scale(1.03); }
+}
+
+.logo-text h1 {
+  font-family: var(--font-fun);
+  font-size: clamp(1.35rem, 2.4vw, 1.85rem);
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  background: linear-gradient(135deg, #ffffff 0%, #38bdf8 52%, #00f2fe 80%, #fbbf24 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 2px 18px rgba(14, 165, 233, 0.28);
+  line-height: 1.15;
+}
+
+.logo-text p {
+  color: #cbd5e1;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-top: 3px;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* Destacado Botón Descarga Offline */
+.btn-download-offline {
+  background: linear-gradient(135deg, #10b981 0%, #06b6d4 55%, #0ea5e9 100%);
+  border: 1px solid rgba(167, 243, 208, 0.55);
+  color: #021814;
+  border-radius: var(--radius-full);
+  padding: 9px 18px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-main);
+  font-size: 0.88rem;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  cursor: pointer;
+  transition: all 0.22s cubic-bezier(0.25, 1, 0.5, 1);
+  box-shadow:
+    0 4px 18px rgba(16, 185, 129, 0.38),
+    0 0 16px rgba(6, 182, 212, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.55);
+}
+
+.btn-download-offline:hover {
+  transform: translateY(-2px) scale(1.02);
+  background: linear-gradient(135deg, #34d399 0%, #22d3ee 55%, #38bdf8 100%);
+  box-shadow:
+    0 8px 25px rgba(16, 185, 129, 0.55),
+    0 0 22px rgba(0, 242, 254, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.75);
+}
+
+.btn-download-offline:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.icon-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--card-border);
+  color: var(--text-primary);
+  border-radius: var(--radius-full);
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-main);
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(10px);
+}
+
+.icon-btn:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--card-border-hover);
+  transform: translateY(-2px);
+}
+
+.icon-btn.muted {
+  color: var(--text-muted);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+/* ==========================================================
+   BANNER SUPERIOR PROMOCIONAL - EVALUADOR TECDOCENTE PRO
+   ========================================================== */
+.promo-banner-top {
+  position: relative;
+  background: linear-gradient(135deg, rgba(13, 29, 74, 0.95) 0%, rgba(30, 27, 94, 0.92) 52%, rgba(9, 34, 72, 0.96) 100%);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  border-left: 4px solid var(--gold);
+  border-radius: var(--radius-md);
+  padding: 0.9rem 1.15rem;
+  margin-bottom: 1.35rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  box-shadow:
+    0 10px 28px rgba(2, 6, 23, 0.5),
+    0 0 24px rgba(14, 165, 233, 0.14),
+    inset 0 1px 0 rgba(251, 191, 36, 0.22);
+  backdrop-filter: blur(12px);
+}
+
+.promo-banner-copy {
+  flex: 1 1 380px;
+  font-size: 0.92rem;
+  line-height: 1.45;
+  color: #e2e8f0;
+  font-weight: 500;
+}
+
+.promo-banner-copy strong {
+  color: #fde68a;
+  font-weight: 800;
+}
+
+.promo-banner-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.promo-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 13px;
+  border-radius: 10px;
+  font-family: var(--font-main);
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  border: 1px solid rgba(56, 189, 248, 0.32);
+  background: rgba(14, 165, 233, 0.14);
+  color: #f0f9ff;
+}
+
+.promo-btn:hover {
+  background: rgba(14, 165, 233, 0.28);
+  border-color: rgba(125, 211, 252, 0.65);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(14, 165, 233, 0.25);
+}
+
+.promo-btn-reel {
+  background: linear-gradient(135deg, rgba(14, 165, 233, 0.24), rgba(67, 56, 202, 0.34));
+  border-color: rgba(96, 165, 250, 0.48);
+  color: #ffffff;
+}
+
+.promo-btn-buy {
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 45%, #10b981 100%);
+  border: 1px solid rgba(254, 240, 138, 0.75);
+  color: #051324;
+  font-weight: 800;
+  box-shadow:
+    0 4px 16px rgba(251, 191, 36, 0.35),
+    0 0 14px rgba(16, 185, 129, 0.25);
+}
+
+.promo-btn-buy:hover {
+  background: linear-gradient(135deg, #fde047 0%, #fbbf24 45%, #34d399 100%);
+  border-color: #fef08a;
+  color: #020817;
+  transform: translateY(-2px) scale(1.02);
+  box-shadow:
+    0 8px 22px rgba(251, 191, 36, 0.5),
+    0 0 18px rgba(16, 185, 129, 0.4);
+}
+
+@media (max-width: 768px) {
+  .main-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .header-actions {
+    width: 100%;
+  }
+  .btn-download-offline {
+    flex: 1 1 100%;
+    justify-content: center;
+  }
+  .promo-banner-actions {
+    width: 100%;
+  }
+  .promo-btn {
+    flex: 1 1 calc(50% - 6px);
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .promo-btn {
+    flex: 1 1 100%;
+  }
+}
+
+/* Grid Layout */
+.main-grid {
+  display: grid;
+  grid-template-columns: 1fr 410px;
+  gap: 2rem;
+  align-items: start;
+  flex: 1;
+}
+
+@media (max-width: 1024px) {
+  .main-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}
+
+/* Wheel Section */
+.wheel-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  position: relative;
+}
+
+.wheel-stage {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
+
+.wheel-wrapper {
+  position: relative;
+  width: min(540px, 86vw);
+  height: min(540px, 86vw);
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  box-shadow: 
+    0 0 55px rgba(14, 165, 233, 0.3),
+    0 12px 42px rgba(0, 0, 0, 0.65),
+    inset 0 0 22px rgba(0, 242, 254, 0.12);
+  background: radial-gradient(circle, #0f2350 0%, #060d24 100%);
+  padding: 8px;
+}
+
+#wheelCanvas {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  display: block;
+}
+
+/* Wheel Pointer / Flapper */
+.wheel-pointer-container {
+  position: absolute;
+  top: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 25;
+  pointer-events: none;
+}
+
+.wheel-pointer {
+  width: 44px;
+  height: 52px;
+  transform-origin: 50% 12px;
+  transition: transform 0.05s ease-out;
+}
+
+.pointer-svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
+}
+
+.wheel-pointer.tick-bump {
+  animation: pointer-bounce 0.12s ease-in-out;
+}
+
+@keyframes pointer-bounce {
+  0% { transform: rotate(0deg); }
+  35% { transform: rotate(22deg) scale(1.1); }
+  70% { transform: rotate(-10deg); }
+  100% { transform: rotate(0deg); }
+}
+
+/* Center Spin Button (inside wheel) */
+.center-spin-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 105px;
+  height: 105px;
+  border-radius: 50%;
+  border: 5px solid #ffffff;
+  background: linear-gradient(135deg, #0ea5e9 0%, #2563eb 55%, #4338ca 100%);
+  color: white;
+  cursor: pointer;
+  z-index: 20;
+  box-shadow: 
+    0 4px 20px rgba(0, 0, 0, 0.65),
+    0 0 22px rgba(14, 165, 233, 0.65),
+    inset 0 2px 4px rgba(255, 255, 255, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  user-select: none;
+}
+
+.center-spin-btn:hover {
+  transform: translate(-50%, -50%) scale(1.08);
+  box-shadow: 
+    0 6px 25px rgba(0, 0, 0, 0.75),
+    0 0 28px rgba(0, 242, 254, 0.9),
+    inset 0 3px 6px rgba(255, 255, 255, 0.8);
+}
+
+.center-spin-btn:active {
+  transform: translate(-50%, -50%) scale(0.95);
+}
+
+.center-spin-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  filter: grayscale(0.5);
+}
+
+.spin-btn-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1.1;
+}
+
+.spin-text {
+  font-family: var(--font-fun);
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.spin-sub {
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: #fde68a;
+  opacity: 0.95;
+}
+
+/* Wheel Controls Below */
+.wheel-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  max-width: 480px;
+}
+
+.btn {
+  font-family: var(--font-main);
+  font-weight: 700;
+  border-radius: var(--radius-md);
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+  text-decoration: none;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #0284c7 0%, #0ea5e9 50%, #10b981 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 18px rgba(14, 165, 233, 0.42);
+}
+
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 8px 28px rgba(0, 242, 254, 0.55);
+  background: linear-gradient(135deg, #0ea5e9 0%, #22d3ee 50%, #34d399 100%);
+}
+
+.btn-primary:active:not(:disabled) {
+  transform: translateY(0) scale(0.98);
+}
+
+.btn-huge {
+  width: 100%;
+  padding: 1.1rem 2rem;
+  font-size: 1.35rem;
+  font-family: var(--font-fun);
+  letter-spacing: 0.5px;
+  border-radius: var(--radius-lg);
+}
+
+.btn-pulse {
+  animation: pulse-glow 2.5s infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 4px 20px rgba(14, 165, 233, 0.4);
+  }
+  50% {
+    box-shadow: 0 4px 35px rgba(0, 242, 254, 0.78), 0 0 16px rgba(16, 185, 129, 0.5);
+  }
+}
+
+.btn-secondary {
+  background: rgba(13, 25, 58, 0.75);
+  color: var(--text-primary);
+  border: 1px solid var(--card-border);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: rgba(20, 38, 84, 0.95);
+  border-color: var(--card-border-hover);
+  transform: translateY(-1px);
+}
+
+.btn-accent {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: #ffffff;
+  font-weight: 800;
+}
+
+.btn-accent:hover:not(:disabled) {
+  background: linear-gradient(135deg, #34d399, #10b981);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px var(--accent-glow);
+}
+
+.btn-warning {
+  background: linear-gradient(135deg, #f59e0b, #ef4444);
+  color: #ffffff;
+}
+
+.btn-warning:hover:not(:disabled) {
+  background: linear-gradient(135deg, #d97706, #dc2626);
+  transform: translateY(-2px);
+}
+
+.btn-large {
+  padding: 0.85rem 1.6rem;
+  font-size: 1.05rem;
+}
+
+.btn-sm {
+  padding: 6px 12px;
+  font-size: 0.85rem;
+}
+
+.btn-danger-soft {
+  color: #f87171;
+}
+
+.btn-danger-soft:hover {
+  background: rgba(239, 68, 68, 0.15) !important;
+  border-color: rgba(239, 68, 68, 0.3) !important;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.quick-options {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 10px;
+}
+
+.spin-speed-selector {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.form-select-sm {
+  background: rgba(13, 25, 58, 0.85);
+  border: 1px solid var(--card-border);
+  color: var(--text-primary);
+  border-radius: var(--radius-sm);
+  padding: 5px 8px;
+  font-size: 0.82rem;
+  outline: none;
+  cursor: pointer;
+}
+
+.form-select-sm option {
+  background: #0b1533;
+  color: white;
+}
+
+/* Sidebar Section */
+.sidebar-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tabs-nav {
+  display: flex;
+  gap: 8px;
+  background: rgba(6, 12, 31, 0.72);
+  padding: 5px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--card-border);
+}
+
+.tab-btn {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-main);
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.tab-btn:hover {
+  color: var(--text-primary);
+  background: rgba(56, 189, 248, 0.08);
+}
+
+.tab-btn.active {
+  background: var(--bg-card);
+  color: var(--text-primary);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(56, 189, 248, 0.32);
+}
+
+.badge {
+  background: rgba(14, 165, 233, 0.22);
+  color: #e0f2fe;
+  font-size: 0.75rem;
+  padding: 2px 7px;
+  border-radius: 10px;
+  font-weight: 800;
+}
+
+.badge-accent {
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  color: #060c1f;
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+/* Panel Card */
+.panel-card {
+  background: var(--bg-card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  padding: 1.2rem;
+  backdrop-filter: blur(14px);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 420px;
+}
+
+/* Tarjeta Promocional Lateral (.promo-sidebar-card) */
+.promo-sidebar-card {
+  background: linear-gradient(145deg, rgba(13, 28, 68, 0.94) 0%, rgba(10, 20, 48, 0.96) 100%);
+  border: 1px solid rgba(56, 189, 248, 0.28);
+  border-top: 3px solid var(--primary);
+  border-radius: var(--radius-lg);
+  padding: 1rem 1.15rem;
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  backdrop-filter: blur(14px);
+}
+
+.promo-sidebar-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  align-self: flex-start;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: #fde68a;
+  background: rgba(251, 191, 36, 0.14);
+  border: 1px solid rgba(251, 191, 36, 0.35);
+  padding: 3px 9px;
+  border-radius: var(--radius-full);
+}
+
+.promo-sidebar-card h4 {
+  font-size: 0.98rem;
+  font-weight: 800;
+  color: #f8fafc;
+  line-height: 1.3;
+}
+
+.promo-sidebar-card p {
+  font-size: 0.82rem;
+  color: #cbd5e1;
+  line-height: 1.42;
+}
+
+.promo-sidebar-links {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.promo-sidebar-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.promo-sidebar-btn.fb-follow {
+  background: linear-gradient(135deg, #1877f2, #0ea5e9);
+  color: #ffffff;
+  border: 1px solid rgba(125, 211, 252, 0.45);
+  box-shadow: 0 4px 12px rgba(14, 165, 233, 0.28);
+}
+
+.promo-sidebar-btn.fb-follow:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(14, 165, 233, 0.45);
+  filter: brightness(1.08);
+}
+
+.promo-sidebar-btn.fb-video {
+  background: rgba(16, 185, 129, 0.15);
+  color: #6ee7b7;
+  border: 1px solid rgba(16, 185, 129, 0.4);
+}
+
+.promo-sidebar-btn.fb-video:hover {
+  background: rgba(16, 185, 129, 0.26);
+  color: #ecfdf5;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 420px) {
+  .promo-sidebar-links {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Add Name Form */
+.add-name-form .input-group {
+  display: flex;
+  gap: 8px;
+}
+
+.input-group input {
+  flex: 1;
+  background: rgba(3, 8, 23, 0.55);
+  border: 1.5px solid var(--card-border);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  color: var(--text-primary);
+  font-family: var(--font-main);
+  font-size: 0.95rem;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.input-group input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 15px var(--primary-glow);
+  background: rgba(3, 8, 23, 0.75);
+}
+
+.input-group input::placeholder {
+  color: var(--text-muted);
+}
+
+/* List Toolbar */
+.list-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 2px;
+  border-bottom: 1px solid rgba(56, 189, 248, 0.12);
+}
+
+.list-info {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.toolbar-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.btn-link {
+  background: none;
+  border: none;
+  color: #38bdf8;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 4px;
+  transition: color 0.15s ease;
+}
+
+.btn-link:hover {
+  text-decoration: underline;
+  color: #7dd3fc;
+}
+
+.btn-link-danger {
+  color: #f87171;
+}
+
+.btn-link-danger:hover {
+  color: #ef4444;
+}
+
+/* Names List Scrollable */
+.names-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 290px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+/* Custom Scrollbar */
+.names-list::-webkit-scrollbar,
+.history-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.names-list::-webkit-scrollbar-track,
+.history-list::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+.names-list::-webkit-scrollbar-thumb,
+.history-list::-webkit-scrollbar-thumb {
+  background: rgba(56, 189, 248, 0.28);
+  border-radius: 4px;
+}
+
+.names-list::-webkit-scrollbar-thumb:hover,
+.history-list::-webkit-scrollbar-thumb:hover {
+  background: rgba(56, 189, 248, 0.48);
+}
+
+/* Single Name Item Card */
+.name-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(56, 189, 248, 0.14);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  gap: 10px;
+  transition: all 0.2s ease;
+}
+
+.name-item:hover {
+  background: rgba(14, 165, 233, 0.1);
+  border-color: rgba(56, 189, 248, 0.3);
+  transform: translateX(2px);
+}
+
+.name-item.disabled {
+  opacity: 0.45;
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.name-item.disabled .name-text {
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+
+.name-item-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  overflow: hidden;
+}
+
+.name-color-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+.name-text {
+  font-weight: 600;
+  font-size: 0.95rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+}
+
+.name-item-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.checkbox-toggle {
+  cursor: pointer;
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent);
+}
+
+.item-delete-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: all 0.15s ease;
+}
+
+.item-delete-btn:hover {
+  color: var(--danger);
+  transform: scale(1.15);
+}
+
+.panel-hint {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  text-align: center;
+  margin-top: auto;
+}
+
+/* History Header */
+.history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(56, 189, 248, 0.14);
+}
+
+.history-header h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.history-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 330px;
+  overflow-y: auto;
+  padding-right: 4px;
+  flex: 1;
+}
+
+.history-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(251, 191, 36, 0.28);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  animation: slide-in 0.3s ease-out;
+}
+
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.history-item-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.history-rank {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--gold);
+  background: rgba(251, 191, 36, 0.15);
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+}
+
+.history-name {
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.history-time {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2.5rem 1rem;
+  color: var(--text-muted);
+}
+
+.empty-icon {
+  font-size: 3rem;
+  margin-bottom: 10px;
+  opacity: 0.6;
+}
+
+.empty-state p {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.empty-state small {
+  font-size: 0.82rem;
+  margin-top: 4px;
+}
+
+/* ==========================================================
+   WINNER CELEBRATION MODAL
+   ========================================================== */
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(3, 7, 18, 0.84);
+  backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 1.25rem;
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.winner-dialog {
+  position: relative;
+  background: linear-gradient(145deg, #0d1d47, #060d24);
+  border: 2px solid rgba(251, 191, 36, 0.65);
+  box-shadow: 
+    0 0 60px rgba(14, 165, 233, 0.28),
+    0 0 35px rgba(251, 191, 36, 0.25),
+    0 20px 50px rgba(0, 0, 0, 0.85);
+  border-radius: 28px;
+  max-width: 580px;
+  width: 100%;
+  max-height: 94vh;
+  overflow-y: auto;
+  padding: 2rem 1.85rem;
+  text-align: center;
+  transform: scale(0.7) translateY(40px);
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.modal-overlay.active .winner-dialog {
+  transform: scale(1) translateY(0);
+}
+
+.modal-confetti {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.winner-dialog-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.05rem;
+}
+
+.crown-icon-wrapper {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.crown-icon {
+  font-size: 3.6rem;
+  z-index: 2;
+  animation: crown-float 2.5s infinite ease-in-out;
+  display: inline-block;
+}
+
+@keyframes crown-float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(4deg); }
+}
+
+.crown-pulse {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  background: radial-gradient(circle, rgba(251, 191, 36, 0.6) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: crown-pulse-anim 1.8s infinite;
+}
+
+@keyframes crown-pulse-anim {
+  0% { transform: scale(0.8); opacity: 0.8; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+.winner-title {
+  font-family: var(--font-fun);
+  font-size: 2.1rem;
+  letter-spacing: 1px;
+  background: linear-gradient(135deg, #fde047, #fbbf24, #38bdf8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 4px 20px rgba(251, 191, 36, 0.35);
+}
+
+.winner-subtitle {
+  color: var(--text-secondary);
+  font-size: 0.98rem;
+  margin-top: -8px;
+}
+
+/* Huge Winner Name Card */
+.winner-name-card {
+  width: 100%;
+  background: rgba(14, 165, 233, 0.08);
+  border: 2px solid rgba(56, 189, 248, 0.35);
+  border-radius: 20px;
+  padding: 1.4rem 1.2rem;
+  box-shadow: inset 0 0 25px rgba(14, 165, 233, 0.08);
+  margin: 0.3rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  word-break: break-word;
+  animation: card-glow 2s infinite alternate;
+}
+
+@keyframes card-glow {
+  0% {
+    border-color: rgba(251, 191, 36, 0.5);
+    box-shadow: 0 0 18px rgba(251, 191, 36, 0.22);
+  }
+  100% {
+    border-color: rgba(0, 242, 254, 0.78);
+    box-shadow: 0 0 30px rgba(14, 165, 233, 0.38);
+  }
+}
+
+.winner-name {
+  font-family: var(--font-fun);
+  font-size: 2.45rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+  line-height: 1.2;
+}
+
+@media (max-width: 500px) {
+  .winner-name {
+    font-size: 1.75rem;
+  }
+  .winner-title {
+    font-size: 1.65rem;
+  }
+}
+
+.winner-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  width: 100%;
+}
+
+/* Enlace Promocional dentro del Modal de Ganador */
+.winner-promo-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  margin-top: 4px;
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, rgba(14, 165, 233, 0.16), rgba(16, 185, 129, 0.18));
+  border: 1px solid rgba(251, 191, 36, 0.45);
+  color: #fde68a;
+  font-size: 0.84rem;
+  font-weight: 700;
+  line-height: 1.35;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.winner-promo-link:hover {
+  background: linear-gradient(135deg, rgba(14, 165, 233, 0.28), rgba(16, 185, 129, 0.3));
+  border-color: var(--gold);
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(251, 191, 36, 0.22);
+}
+
+.modal-close-x {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 2rem;
+  cursor: pointer;
+  line-height: 1;
+  transition: color 0.15s ease;
+}
+
+.modal-close-x:hover {
+  color: white;
+}
+
+/* Bulk Import Modal Dialog */
+.simple-modal-dialog {
+  background: #0b1636;
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  border-radius: var(--radius-lg);
+  padding: 1.8rem;
+  max-width: 500px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  box-shadow: var(--shadow-lg);
+}
+
+.simple-modal-dialog h3 {
+  font-size: 1.3rem;
+  color: white;
+}
+
+.modal-instruction {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.simple-modal-dialog textarea {
+  background: rgba(3, 8, 23, 0.55);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-sm);
+  color: white;
+  padding: 12px;
+  font-family: var(--font-main);
+  font-size: 0.95rem;
+  resize: vertical;
+  outline: none;
+}
+
+.simple-modal-dialog textarea:focus {
+  border-color: var(--primary);
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+/* Global Celebration Confetti Canvas */
+.global-confetti {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 999;
+}
+
+/* Creator Badge */
+.creator-badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  color: transparent;
+  background: linear-gradient(90deg, #fbbf24, #38bdf8, #10b981, #00f2fe, #fbbf24);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: creator-shimmer 4s linear infinite;
+  margin-top: 3px;
+}
+
+@keyframes creator-shimmer {
+  0% { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+
+/* Footer */
+.main-footer {
+  text-align: center;
+  padding: 1.2rem 0 0.5rem;
+  margin-top: 1.25rem;
+  border-top: 1px solid rgba(56, 189, 248, 0.14);
+}
+
+.main-footer p {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.main-footer strong {
+  color: var(--text-primary);
+  font-weight: 800;
+  background: linear-gradient(135deg, #fbbf24, #38bdf8, #10b981);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+</style>
+</head>
+<body>
+  <div class="app-background">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+
+  <div class="app-container">
+    <!-- Header Oficial TecDocente Pro -->
+    <header class="main-header">
+      <div class="logo-group">
+        <div class="logo-svg-wrap" aria-hidden="true">
+          <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Logo TecDocente Pro">
+            <defs>
+              <linearGradient id="tdpShieldGrad" x1="6" y1="4" x2="58" y2="60" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#00f2fe"/>
+                <stop offset="55%" stop-color="#0ea5e9"/>
+                <stop offset="100%" stop-color="#1d4ed8"/>
+              </linearGradient>
+              <linearGradient id="tdpCapGrad" x1="10" y1="14" x2="54" y2="38" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#38bdf8"/>
+                <stop offset="50%" stop-color="#00f2fe"/>
+                <stop offset="100%" stop-color="#10b981"/>
+              </linearGradient>
+              <linearGradient id="tdpCubeLeft" x1="14" y1="26" x2="32" y2="52" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#0284c7" stop-opacity="0.85"/>
+                <stop offset="100%" stop-color="#1e3a8a" stop-opacity="0.9"/>
+              </linearGradient>
+              <linearGradient id="tdpCubeRight" x1="32" y1="26" x2="50" y2="52" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#0ea5e9" stop-opacity="0.55"/>
+                <stop offset="100%" stop-color="#312e81" stop-opacity="0.85"/>
+              </linearGradient>
+            </defs>
+            <!-- Escudo Hexagonal Isométrico -->
+            <path d="M32 4L56 17.5V46.5L32 60L8 46.5V17.5L32 4Z" fill="#07122e" stroke="url(#tdpShieldGrad)" stroke-width="2.5"/>
+            <!-- Cubo Tecnológico Inferior -->
+            <path d="M32 34L15 24.5V42.5L32 52V34Z" fill="url(#tdpCubeLeft)"/>
+            <path d="M32 34L49 24.5V42.5L32 52V34Z" fill="url(#tdpCubeRight)"/>
+            <path d="M32 34V52M15 24.5L32 34L49 24.5" stroke="#38bdf8" stroke-width="1.3" stroke-opacity="0.65"/>
+            <!-- Birrete Tecnológico Superior -->
+            <path d="M32 12L53 22.5L32 33L11 22.5L32 12Z" fill="url(#tdpCapGrad)"/>
+            <path d="M21 27.8V36.2C21 39.5 25.9 42.2 32 42.2C38.1 42.2 43 39.5 43 36.2V27.8L32 33.3L21 27.8Z" fill="#0ea5e9" fill-opacity="0.9" stroke="#bae6fd" stroke-width="1.2"/>
+            <!-- Borla Dorada -->
+            <path d="M32 22.5L49 24.8V35.5" stroke="#fbbf24" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="49" cy="37.5" r="2.8" fill="#fbbf24"/>
+            <circle cx="32" cy="22.5" r="2.2" fill="#ffffff"/>
+          </svg>
+        </div>
+        <div class="logo-text">
+          <h1>TECDOCENTE PRO • RULETA ESCOLAR</h1>
+          <p>Herramienta Gratuita 100% Offline para Participaciones y Dinámicas en Aula</p>
+          <span class="creator-badge">✨ Hecho por Mtro. Jorge Luis Meza Aldana</span>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button id="downloadOfflineBtn" type="button" class="btn-download-offline" onclick="descargarRuletaOffline()" title="Guardar archivo portátil para usar sin internet">
+          <span class="icon">📥</span>
+          <span class="btn-label">Descargar para PC (Sin Internet)</span>
+        </button>
+        <button id="soundToggleBtn" class="icon-btn" title="Activar/Silenciar sonido">
+          <span class="icon" id="soundIcon">🔊</span>
+          <span class="btn-label" id="soundLabel">Sonido ON</span>
+        </button>
+        <button id="fullscreenBtn" class="icon-btn" title="Pantalla completa">
+          <span class="icon">⛶</span>
+          <span class="btn-label">Pantalla</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Banner Superior Promocional Evaluador TecDocente Pro -->
+    <section class="promo-banner-top" aria-label="Promoción Evaluador Oficial TecDocente Pro">
+      <p class="promo-banner-copy">
+        📊 ¿Ya casi entregas calificaciones? Automatiza asistencias, promedios, cuadros de honor y boletas con el <strong>Evaluador Oficial TecDocente Pro</strong> (100% sin internet).
+      </p>
+      <div class="promo-banner-actions">
+        <a href="https://www.facebook.com/share/r/1FJA9J9ACP/" data-tdp-link="facebookReel" target="_blank" rel="noopener" class="promo-btn promo-btn-reel">
+          🎬 Ver Video del Evaluador
+        </a>
+        <a href="https://tecdocentepro-lab.github.io/tecdocente-demo/" data-tdp-link="demoPrimaria" target="_blank" rel="noopener" class="promo-btn">
+          🏫 Demo Primaria
+        </a>
+        <a href="https://tecdocentepro-lab.github.io/tecdocente-demo/secundaria/" data-tdp-link="demoSecundaria" target="_blank" rel="noopener" class="promo-btn">
+          📚 Demo Secundaria
+        </a>
+        <a href="https://www.facebook.com/share/1K1phph25n/" data-tdp-link="facebookPagina" target="_blank" rel="noopener" class="promo-btn promo-btn-buy">
+          💬 Comprar en Facebook ($190)
+        </a>
+      </div>
+    </section>
+
+    <!-- Main Content Layout -->
+    <main class="main-grid">
+      <!-- Left: Wheel Section -->
+      <section class="wheel-section">
+        <div class="wheel-stage">
+          <!-- Outer glowing ring container -->
+          <div class="wheel-wrapper">
+            <!-- Flapper / Needle Indicator at Top -->
+            <div class="wheel-pointer-container">
+              <div class="wheel-pointer" id="wheelPointer">
+                <svg viewBox="0 0 40 50" class="pointer-svg">
+                  <path d="M 20 48 L 5 10 A 15 15 0 0 1 35 10 Z" fill="#f59e0b" stroke="#ffffff" stroke-width="3" filter="drop-shadow(0 4px 6px rgba(0,0,0,0.4))"/>
+                  <circle cx="20" cy="15" r="5" fill="#ffffff" />
+                </svg>
+              </div>
+            </div>
+
+            <!-- Canvas for Wheel -->
+            <canvas id="wheelCanvas" width="600" height="600"></canvas>
+
+            <!-- Center Spin Button inside wheel -->
+            <button id="centerSpinBtn" class="center-spin-btn" title="¡Haz clic para girar!">
+              <div class="spin-btn-content">
+                <span class="spin-text">GIRAR</span>
+                <span class="spin-sub">¡SUERTE!</span>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <!-- Wheel Controls -->
+        <div class="wheel-controls">
+          <button id="spinBtn" class="btn btn-primary btn-huge btn-pulse">
+            <span class="btn-icon">🚀</span>
+            <span>¡GIRAR RULETA!</span>
+          </button>
+          
+          <div class="quick-options">
+            <button id="shuffleBtn" class="btn btn-secondary btn-sm" title="Revolver nombres en la ruleta">
+              🔀 Mezclar
+            </button>
+            <button id="resetWheelBtn" class="btn btn-secondary btn-sm" title="Restablecer nombres originales">
+              🔄 Restaurar
+            </button>
+            <div class="spin-speed-selector">
+              <label for="spinDurationSelect">⏱️ Duración:</label>
+              <select id="spinDurationSelect" class="form-select-sm">
+                <option value="4">Rápido (4s)</option>
+                <option value="6" selected>Normal (6s)</option>
+                <option value="9">Suspenso (9s)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right: Participants & History Panel -->
+      <aside class="sidebar-section">
+        <!-- Navigation Tabs -->
+        <div class="tabs-nav">
+          <button class="tab-btn active" data-tab="participantsTab">
+            👥 Nombres <span class="badge" id="activeCountBadge">0</span>
+          </button>
+          <button class="tab-btn" data-tab="historyTab">
+            🏆 Ganadores <span class="badge badge-accent" id="historyCountBadge">0</span>
+          </button>
+        </div>
+
+        <!-- Tab 1: Participants List -->
+        <div class="tab-content active" id="participantsTab">
+          <div class="panel-card">
+            <!-- Add Name Input -->
+            <form id="addNameForm" class="add-name-form" onsubmit="return false;">
+              <div class="input-group">
+                <input type="text" id="nameInput" placeholder="Escribe un nombre aquí..." maxlength="35" autocomplete="off">
+                <button type="submit" id="addNameBtn" class="btn btn-accent">
+                  ➕ Agregar
+                </button>
+              </div>
+            </form>
+
+            <!-- Bulk actions & info bar -->
+            <div class="list-toolbar">
+              <span class="list-info" id="listInfoText">0 en ruleta</span>
+              <div class="toolbar-actions">
+                <button id="bulkAddBtn" class="btn-link" title="Pegar lista de nombres">📋 Pegar lista</button>
+                <button id="clearAllBtn" class="btn-link btn-link-danger" title="Borrar todos los nombres">🗑️ Limpiar</button>
+              </div>
+            </div>
+
+            <!-- List of Names -->
+            <div class="names-list" id="namesList">
+              <!-- Dynamically populated -->
+            </div>
+
+            <!-- Quick helper note -->
+            <p class="panel-hint">💡 Puedes desmarcar la casilla para esconder un nombre sin borrarlo.</p>
+          </div>
+        </div>
+
+        <!-- Tab 2: Winners History -->
+        <div class="tab-content" id="historyTab">
+          <div class="panel-card">
+            <div class="history-header">
+              <h3>Historial de Premiados</h3>
+              <div class="history-actions">
+                <button id="copyHistoryBtn" class="btn btn-sm btn-secondary" title="Copiar lista al portapapeles">📋 Copiar</button>
+                <button id="clearHistoryBtn" class="btn btn-sm btn-secondary btn-danger-soft" title="Borrar historial">🗑️ Vaciar</button>
+              </div>
+            </div>
+
+            <div class="history-list" id="historyList">
+              <div class="empty-state">
+                <span class="empty-icon">🎯</span>
+                <p>Aún no hay ganadores seleccionados.</p>
+                <small>¡Gira la ruleta para comenzar la lista!</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tarjeta Promocional Lateral Derecha -->
+        <div class="promo-sidebar-card">
+          <span class="promo-sidebar-badge">🎓 TecDocente Pro Oficial</span>
+          <h4>¡Más herramientas docentes sin internet!</h4>
+          <p>Síguenos en nuestra página oficial de Facebook para recibir material gratuito y mira en video cómo funciona el Evaluador Trimestral.</p>
+          <div class="promo-sidebar-links">
+            <a href="https://www.facebook.com/share/1K1phph25n/" data-tdp-link="facebookPagina" target="_blank" rel="noopener" class="promo-sidebar-btn fb-follow">
+              👍 Seguir en Facebook
+            </a>
+            <a href="https://www.facebook.com/share/r/1FJA9J9ACP/" data-tdp-link="facebookReel" target="_blank" rel="noopener" class="promo-sidebar-btn fb-video">
+              🎬 Video Evaluador
+            </a>
+          </div>
+        </div>
+      </aside>
+    </main>
+
+    <!-- Footer Credits -->
+    <footer class="main-footer">
+      <p>TECDOCENTE PRO • Ruleta Escolar Offline • Hecho por <strong>Mtro. Jorge Luis Meza Aldana</strong> 🌟</p>
+    </footer>
+  </div>
+
+  <!-- Winner Celebration Modal (Grand Reveal!) -->
+  <div class="modal-overlay" id="winnerModal" role="dialog" aria-modal="true">
+    <div class="winner-dialog">
+      <!-- Confetti Cannon Animation Behind -->
+      <canvas id="modalConfettiCanvas" class="modal-confetti"></canvas>
+
+      <div class="winner-dialog-content">
+        <div class="crown-icon-wrapper">
+          <span class="crown-icon">👑</span>
+          <div class="crown-pulse"></div>
+        </div>
+
+        <h2 class="winner-title">¡TENEMOS UN GANADOR!</h2>
+        <p class="winner-subtitle" id="winnerSubtitle">La suerte ha decidido</p>
+
+        <!-- Big Winner Card Display -->
+        <div class="winner-name-card" id="winnerCard">
+          <span class="winner-name" id="winnerNameText">Nombre Ganador</span>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="winner-actions">
+          <button id="modalSpinAgainBtn" class="btn btn-primary btn-large btn-pulse">
+            🔄 ¡Girar de nuevo!
+          </button>
+          <button id="modalHideWinnerBtn" class="btn btn-warning btn-large">
+            👁️❌ Esconder de la ruleta
+          </button>
+          <button id="modalKeepAndCloseBtn" class="btn btn-secondary btn-large">
+            ✅ Mantener y cerrar
+          </button>
+        </div>
+
+        <!-- Enlace Promocional al Evaluador en Modal de Ganador -->
+        <a href="https://www.facebook.com/share/1K1phph25n/" data-tdp-link="facebookPagina" target="_blank" rel="noopener" class="winner-promo-link">
+          🚀 ¿Te gustó esta herramienta? Conoce nuestro Evaluador Trimestral Automatizado aquí
+        </a>
+
+        <button id="modalCloseXBtn" class="modal-close-x" aria-label="Cerrar modal">&times;</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bulk Import Modal -->
+  <div class="modal-overlay" id="bulkModal">
+    <div class="simple-modal-dialog">
+      <h3>📋 Cargar lista masiva de nombres</h3>
+      <p class="modal-instruction">Pega o escribe nombres separados por saltos de línea (Enter) o por comas:</p>
+      <textarea id="bulkTextarea" rows="8" placeholder="Carlos Pérez&#10;María Gómez&#10;Juan Rodríguez&#10;Sofía Ramírez..."></textarea>
+      <div class="modal-buttons">
+        <button id="cancelBulkBtn" class="btn btn-secondary">Cancelar</button>
+        <button id="saveBulkBtn" class="btn btn-accent">📥 Cargar nombres</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fullscreen celebration canvas (active during spin win) -->
+  <canvas id="globalConfettiCanvas" class="global-confetti"></canvas>
+<script>
+const URL_FACEBOOK_PAGINA = "https://www.facebook.com/share/1K1phph25n/";
+const URL_FACEBOOK_REEL = "https://www.facebook.com/share/r/1FJA9J9ACP/";
+const URL_DEMO_PRIMARIA = "https://tecdocentepro-lab.github.io/tecdocente-demo/";
+const URL_DEMO_SECUNDARIA = "https://tecdocentepro-lab.github.io/tecdocente-demo/secundaria/";
+
+/**
+ * ==========================================================
+ * TECDOCENTE PRO • RULETA ESCOLAR INTERACTIVA
+ * Con Auto-Descarga Offline, Sonidos Sintetizados (Web Audio API),
+ * Confeti, Animaciones Físicas y Registro de Ganadores.
+ * ==========================================================
+ */
+
+// --- FUNCIÓN DE AUTO-DESCARGA LIMPIA OFFLINE ---
+async function descargarRuletaOffline() {
+  const nombreArchivo = "Ruleta_TecDocente_Pro.html";
+  let htmlContenido = null;
+
+  // 1. Si está alojada en servidor web (http/https), obtener el HTML original limpio
+  if (window.location.protocol.startsWith('http')) {
+    try {
+      const response = await fetch(window.location.href, { cache: 'no-store' });
+      if (response.ok) {
+        const rawHtml = await response.text();
+        if (rawHtml && rawHtml.trim().length > 0) {
+          htmlContenido = rawHtml;
+        }
+      }
+    } catch (error) {
+      console.warn('No se pudo obtener la copia desde el servidor, generando respaldo local:', error);
+    }
+  }
+
+  // 2. Respaldo (fallback si falla el fetch o si ya se abrió localmente como file://)
+  if (!htmlContenido) {
+    const clone = document.documentElement.cloneNode(true);
+
+    const namesListClone = clone.querySelector('#namesList');
+    if (namesListClone) namesListClone.innerHTML = '';
+
+    const historyListClone = clone.querySelector('#historyList');
+    if (historyListClone) historyListClone.innerHTML = '';
+
+    clone.querySelectorAll('.modal-overlay').forEach(overlay => {
+      overlay.classList.remove('active');
+    });
+
+    const activeCountClone = clone.querySelector('#activeCountBadge');
+    if (activeCountClone) activeCountClone.textContent = '0';
+
+    const historyCountClone = clone.querySelector('#historyCountBadge');
+    if (historyCountClone) historyCountClone.textContent = '0';
+
+    const listInfoClone = clone.querySelector('#listInfoText');
+    if (listInfoClone) listInfoClone.textContent = '0 en ruleta';
+
+    const downloadBtnClone = clone.querySelector('#downloadOfflineBtn');
+    if (downloadBtnClone) {
+      downloadBtnClone.removeAttribute('data-downloading');
+      downloadBtnClone.innerHTML = '<span class="icon">📥</span><span class="btn-label">Descargar para PC (Sin Internet)</span>';
+    }
+
+    htmlContenido = '<!DOCTYPE html>\n' + clone.outerHTML;
+  }
+
+  // 3. Crear Blob y forzar descarga como Ruleta_TecDocente_Pro.html
+  const blob = new Blob([htmlContenido], { type: 'text/html;charset=utf-8' });
+  const blobUrl = URL.createObjectURL(blob);
+
+  const link = document.createElement('a');
+  link.href = blobUrl;
+  link.download = nombreArchivo;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+
+  setTimeout(() => URL.revokeObjectURL(blobUrl), 2000);
+
+  // Confirmación visual breve en el botón (después del clon para no alterar el archivo guardado)
+  const btn = document.getElementById('downloadOfflineBtn');
+  if (btn && !btn.dataset.downloading) {
+    const htmlOriginal = btn.innerHTML;
+    btn.dataset.downloading = '1';
+    btn.innerHTML = '<span class="icon">✅</span><span class="btn-label">¡Guardado para PC!</span>';
+    setTimeout(() => {
+      btn.innerHTML = htmlOriginal;
+      delete btn.dataset.downloading;
+    }, 2400);
+  }
+}
+
+// --- SINCRONIZACIÓN DE ENLACES OFICIALES ---
+function sincronizarEnlacesOficiales() {
+  const mapaEnlaces = {
+    facebookPagina: URL_FACEBOOK_PAGINA,
+    facebookReel: URL_FACEBOOK_REEL,
+    demoPrimaria: URL_DEMO_PRIMARIA,
+    demoSecundaria: URL_DEMO_SECUNDARIA
+  };
+
+  document.querySelectorAll('[data-tdp-link]').forEach(el => {
+    const clave = el.getAttribute('data-tdp-link');
+    if (mapaEnlaces[clave]) {
+      el.href = mapaEnlaces[clave];
+    }
+  });
+}
+
+// --- PALETA DE COLORES VIBRANTES ---
+const COLOR_PALETTE = [
+  '#FF2A6D', '#05D9E8', '#FFBC00', '#00F0FF', 
+  '#9D00FF', '#00E676', '#FF5722', '#3D5AFE',
+  '#F50057', '#00E5FF', '#76FF03', '#FF9100',
+  '#D500F9', '#1DE9B6', '#FF3D00', '#651FFF'
+];
+
+const DEFAULT_NAMES = [
+  'Carlos', 'Sofía', 'Alejandro', 'Valentina', 
+  'Mateo', 'Camila', 'Santiago', 'Lucía'
+];
+
+// --- SISTEMA DE EFECTOS DE SONIDO (WEB AUDIO API) ---
+class SoundSystem {
+  constructor() {
+    this.ctx = null;
+    this.enabled = true;
+    this.lastTickTime = 0;
+  }
+
+  init() {
+    if (!this.ctx) {
+      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+      if (AudioContextClass) {
+        this.ctx = new AudioContextClass();
+      }
+    }
+    if (this.ctx && this.ctx.state === 'suspended') {
+      this.ctx.resume();
+    }
+  }
+
+  toggle() {
+    this.enabled = !this.enabled;
+    return this.enabled;
+  }
+
+  // Ticking / Clack mecánico de la aguja con la clavija
+  playTick() {
+    if (!this.enabled) return;
+    this.init();
+    if (!this.ctx) return;
+
+    const now = this.ctx.currentTime;
+    // Prevenir saturación de audio a altísimas velocidades
+    if (now - this.lastTickTime < 0.025) return;
+    this.lastTickTime = now;
+
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    // Rango de frecuencia para sonido de chasquido de plástico/madera
+    const freq = 650 + (Math.random() * 220);
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(freq, now);
+    osc.frequency.exponentialRampToValueAtTime(80, now + 0.035);
+
+    gain.gain.setValueAtTime(0.3, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.035);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.035);
+  }
+
+  // Fanfarria triunfal al salir un ganador
+  playVictory() {
+    if (!this.enabled) return;
+    this.init();
+    if (!this.ctx) return;
+
+    const now = this.ctx.currentTime;
+    // Acordes alegres (Do Mayor arpegiado brillante: C5, E5, G5, B5, C6)
+    const notes = [523.25, 659.25, 783.99, 987.77, 1046.50, 1318.51];
+    
+    notes.forEach((freq, idx) => {
+      const startTime = now + (idx * 0.09);
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, startTime);
+
+      gain.gain.setValueAtTime(0, startTime);
+      gain.gain.linearRampToValueAtTime(0.22, startTime + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, startTime + 0.6);
+
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+
+      osc.start(startTime);
+      osc.stop(startTime + 0.65);
+    });
+
+    // Toque extra de campanilla brillante al final
+    setTimeout(() => {
+      if (!this.ctx) return;
+      const t = this.ctx.currentTime;
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(1567.98, t); // G6
+      gain.gain.setValueAtTime(0.2, t);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.8);
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+      osc.start(t);
+      osc.stop(t + 0.85);
+    }, 450);
+  }
+}
+
+// --- SISTEMA DE CONFETI EN CANVAS ---
+class ConfettiEngine {
+  constructor(canvas) {
+    this.canvas = canvas;
+    this.ctx = canvas.getContext('2d');
+    this.particles = [];
+    this.active = false;
+    this.animationId = null;
+
+    this.resize();
+    window.addEventListener('resize', () => this.resize());
+  }
+
+  resize() {
+    this.canvas.width = this.canvas.offsetWidth || window.innerWidth;
+    this.canvas.height = this.canvas.offsetHeight || window.innerHeight;
+  }
+
+  explode(count = 120) {
+    this.resize();
+    this.particles = [];
+    const colors = ['#FF2A6D', '#FFBC00', '#05D9E8', '#00E676', '#9D00FF', '#FFFFFF', '#FF5722'];
+
+    for (let i = 0; i < count; i++) {
+      this.particles.push({
+        x: this.canvas.width * (0.2 + Math.random() * 0.6),
+        y: this.canvas.height * (0.3 + Math.random() * 0.3),
+        vx: (Math.random() - 0.5) * 18,
+        vy: -Math.random() * 16 - 5,
+        size: Math.random() * 8 + 5,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        rotation: Math.random() * 360,
+        rotationSpeed: (Math.random() - 0.5) * 12,
+        gravity: 0.35,
+        drag: 0.96,
+        opacity: 1
+      });
+    }
+
+    if (!this.active) {
+      this.active = true;
+      this.render();
+    }
+  }
+
+  render() {
+    if (!this.active) return;
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+    for (let i = 0; i < this.particles.length; i++) {
+      const p = this.particles[i];
+      p.vx *= p.drag;
+      p.vy += p.gravity;
+      p.vy *= p.drag;
+      p.x += p.vx;
+      p.y += p.vy;
+      p.rotation += p.rotationSpeed;
+      p.opacity -= 0.0035;
+
+      this.ctx.save();
+      this.ctx.translate(p.x, p.y);
+      this.ctx.rotate((p.rotation * Math.PI) / 180);
+      this.ctx.globalAlpha = Math.max(0, p.opacity);
+      this.ctx.fillStyle = p.color;
+      this.ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.6);
+      this.ctx.restore();
+    }
+
+    // Filtrar partículas que salieron o se desvanecieron
+    this.particles = this.particles.filter(p => p.opacity > 0 && p.y < this.canvas.height + 20);
+
+    if (this.particles.length > 0) {
+      this.animationId = requestAnimationFrame(() => this.render());
+    } else {
+      this.active = false;
+      this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    }
+  }
+
+  stop() {
+    this.active = false;
+    if (this.animationId) {
+      cancelAnimationFrame(this.animationId);
+    }
+    this.particles = [];
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+  }
+}
+
+// --- CLASE PRINCIPAL DE LA APLICACIÓN RULETA ---
+class RouletteApp {
+  constructor() {
+    // Estado de participantes
+    this.items = [];
+    this.history = [];
+    this.isSpinning = false;
+    this.currentAngle = 0;
+    this.lastWinner = null;
+    this.lastPegIndex = -1;
+
+    // Servicios
+    this.sounds = new SoundSystem();
+    this.initDOM();
+    this.initCanvas();
+    this.initConfetti();
+    this.loadState();
+    this.bindEvents();
+    this.renderNamesList();
+    this.renderHistory();
+    this.drawWheel();
+  }
+
+  initDOM() {
+    this.canvas = document.getElementById('wheelCanvas');
+    this.pointer = document.getElementById('wheelPointer');
+    this.spinBtn = document.getElementById('spinBtn');
+    this.centerSpinBtn = document.getElementById('centerSpinBtn');
+    this.shuffleBtn = document.getElementById('shuffleBtn');
+    this.resetWheelBtn = document.getElementById('resetWheelBtn');
+    this.spinDurationSelect = document.getElementById('spinDurationSelect');
+    
+    // Header
+    this.soundToggleBtn = document.getElementById('soundToggleBtn');
+    this.soundIcon = document.getElementById('soundIcon');
+    this.soundLabel = document.getElementById('soundLabel');
+    this.fullscreenBtn = document.getElementById('fullscreenBtn');
+
+    // Sidebar
+    this.tabBtns = document.querySelectorAll('.tab-btn');
+    this.tabContents = document.querySelectorAll('.tab-content');
+    this.addNameForm = document.getElementById('addNameForm');
+    this.nameInput = document.getElementById('nameInput');
+    this.namesList = document.getElementById('namesList');
+    this.activeCountBadge = document.getElementById('activeCountBadge');
+    this.historyCountBadge = document.getElementById('historyCountBadge');
+    this.listInfoText = document.getElementById('listInfoText');
+    this.bulkAddBtn = document.getElementById('bulkAddBtn');
+    this.clearAllBtn = document.getElementById('clearAllBtn');
+    this.historyList = document.getElementById('historyList');
+    this.copyHistoryBtn = document.getElementById('copyHistoryBtn');
+    this.clearHistoryBtn = document.getElementById('clearHistoryBtn');
+
+    // Modals
+    this.winnerModal = document.getElementById('winnerModal');
+    this.winnerNameText = document.getElementById('winnerNameText');
+    this.winnerSubtitle = document.getElementById('winnerSubtitle');
+    this.modalSpinAgainBtn = document.getElementById('modalSpinAgainBtn');
+    this.modalHideWinnerBtn = document.getElementById('modalHideWinnerBtn');
+    this.modalKeepAndCloseBtn = document.getElementById('modalKeepAndCloseBtn');
+    this.modalCloseXBtn = document.getElementById('modalCloseXBtn');
+
+    this.bulkModal = document.getElementById('bulkModal');
+    this.bulkTextarea = document.getElementById('bulkTextarea');
+    this.cancelBulkBtn = document.getElementById('cancelBulkBtn');
+    this.saveBulkBtn = document.getElementById('saveBulkBtn');
+  }
+
+  initCanvas() {
+    this.ctx = this.canvas.getContext('2d');
+    this.fixCanvasDpi();
+    window.addEventListener('resize', () => {
+      this.fixCanvasDpi();
+      this.drawWheel();
+    });
+
+    // Desbloquear audio en la primera interacción táctil o clic
+    const unlockAudio = () => {
+      this.sounds.init();
+      window.removeEventListener('pointerdown', unlockAudio);
+      window.removeEventListener('keydown', unlockAudio);
+    };
+    window.addEventListener('pointerdown', unlockAudio);
+    window.addEventListener('keydown', unlockAudio);
+  }
+
+  fixCanvasDpi() {
+    const dpr = window.devicePixelRatio || 1;
+    const rect = this.canvas.getBoundingClientRect();
+    const size = Math.round(rect.width) || 540;
+
+    this.canvas.width = Math.round(size * dpr);
+    this.canvas.height = Math.round(size * dpr);
+    this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    this.displaySize = size;
+  }
+
+  initConfetti() {
+    this.globalConfetti = new ConfettiEngine(document.getElementById('globalConfettiCanvas'));
+    this.modalConfetti = new ConfettiEngine(document.getElementById('modalConfettiCanvas'));
+  }
+
+  // --- PERSISTENCIA LOCALSTORAGE ---
+  loadState() {
+    try {
+      const savedItems = localStorage.getItem('roulette_items');
+      if (savedItems) {
+        this.items = JSON.parse(savedItems);
+      } else {
+        this.setDefaultItems();
+      }
+
+      const savedHistory = localStorage.getItem('roulette_history');
+      if (savedHistory) {
+        this.history = JSON.parse(savedHistory);
+      }
+
+      const soundPref = localStorage.getItem('roulette_sound_enabled');
+      if (soundPref !== null) {
+        this.sounds.enabled = soundPref === 'true';
+        this.updateSoundBtnUI();
+      }
+    } catch (e) {
+      console.error('Error al cargar datos:', e);
+      this.setDefaultItems();
+    }
+  }
+
+  saveState() {
+    try {
+      localStorage.setItem('roulette_items', JSON.stringify(this.items));
+      localStorage.setItem('roulette_history', JSON.stringify(this.history));
+      localStorage.setItem('roulette_sound_enabled', this.sounds.enabled.toString());
+    } catch (e) {
+      console.error('Error al guardar datos:', e);
+    }
+  }
+
+  setDefaultItems() {
+    this.items = DEFAULT_NAMES.map((name, i) => ({
+      id: 'item_' + Date.now() + '_' + i,
+      name: name,
+      active: true,
+      color: COLOR_PALETTE[i % COLOR_PALETTE.length]
+    }));
+  }
+
+  // --- GESTIÓN DE EVENTOS ---
+  bindEvents() {
+    // Girar ruleta
+    this.spinBtn.addEventListener('click', () => this.spin());
+    this.centerSpinBtn.addEventListener('click', () => this.spin());
+
+    // Mezclar y Restaurar
+    this.shuffleBtn.addEventListener('click', () => this.shuffleItems());
+    this.resetWheelBtn.addEventListener('click', () => {
+      if (confirm('¿Restablecer los nombres de ejemplo originales?')) {
+        this.setDefaultItems();
+        this.saveState();
+        this.renderNamesList();
+        this.drawWheel();
+      }
+    });
+
+    // Agregar nombre
+    this.addNameForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      this.addNewName();
+    });
+
+    // Pestañas (Tabs)
+    this.tabBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        this.tabBtns.forEach(b => b.classList.remove('active'));
+        this.tabContents.forEach(c => c.classList.remove('active'));
+        btn.classList.add('active');
+        const targetId = btn.getAttribute('data-tab');
+        document.getElementById(targetId).classList.add('active');
+      });
+    });
+
+    // Carga masiva
+    this.bulkAddBtn.addEventListener('click', () => {
+      this.bulkTextarea.value = '';
+      this.bulkModal.classList.add('active');
+      this.bulkTextarea.focus();
+    });
+
+    this.cancelBulkBtn.addEventListener('click', () => {
+      this.bulkModal.classList.remove('active');
+    });
+
+    this.saveBulkBtn.addEventListener('click', () => this.handleBulkAdd());
+
+    // Limpiar todos
+    this.clearAllBtn.addEventListener('click', () => {
+      if (this.items.length === 0) return;
+      if (confirm('¿Estás seguro de que deseas borrar todos los participantes?')) {
+        this.items = [];
+        this.saveState();
+        this.renderNamesList();
+        this.drawWheel();
+      }
+    });
+
+    // Historial
+    this.copyHistoryBtn.addEventListener('click', () => this.copyHistoryToClipboard());
+    this.clearHistoryBtn.addEventListener('click', () => {
+      if (this.history.length === 0) return;
+      if (confirm('¿Borrar todo el historial de ganadores?')) {
+        this.history = [];
+        this.saveState();
+        this.renderHistory();
+      }
+    });
+
+    // Sonido toggle
+    this.soundToggleBtn.addEventListener('click', () => {
+      const enabled = this.sounds.toggle();
+      this.updateSoundBtnUI();
+      this.saveState();
+      if (enabled) this.sounds.playTick();
+    });
+
+    // Pantalla completa
+    this.fullscreenBtn.addEventListener('click', () => this.toggleFullscreen());
+
+    // Modal de Ganador
+    this.modalSpinAgainBtn.addEventListener('click', () => {
+      this.closeWinnerModal();
+      setTimeout(() => this.spin(), 300);
+    });
+
+    this.modalHideWinnerBtn.addEventListener('click', () => {
+      if (this.lastWinner) {
+        this.toggleItemActive(this.lastWinner.id, false);
+      }
+      this.closeWinnerModal();
+    });
+
+    this.modalKeepAndCloseBtn.addEventListener('click', () => {
+      this.closeWinnerModal();
+    });
+
+    this.modalCloseXBtn.addEventListener('click', () => {
+      this.closeWinnerModal();
+    });
+
+    // Cerrar modales con fondo
+    this.winnerModal.addEventListener('click', (e) => {
+      if (e.target === this.winnerModal) this.closeWinnerModal();
+    });
+    this.bulkModal.addEventListener('click', (e) => {
+      if (e.target === this.bulkModal) this.bulkModal.classList.remove('active');
+    });
+
+    // Atajos de teclado
+    window.addEventListener('keydown', (e) => {
+      if (e.code === 'Space' && !['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
+        e.preventDefault();
+        if (this.winnerModal.classList.contains('active')) {
+          this.closeWinnerModal();
+        } else {
+          this.spin();
+        }
+      }
+      if (e.code === 'Escape') {
+        this.closeWinnerModal();
+        this.bulkModal.classList.remove('active');
+      }
+    });
+  }
+
+  updateSoundBtnUI() {
+    if (this.sounds.enabled) {
+      this.soundIcon.textContent = '🔊';
+      this.soundLabel.textContent = 'Sonido ON';
+      this.soundToggleBtn.classList.remove('muted');
+    } else {
+      this.soundIcon.textContent = '🔇';
+      this.soundLabel.textContent = 'Sonido OFF';
+      this.soundToggleBtn.classList.add('muted');
+    }
+  }
+
+  toggleFullscreen() {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(() => {});
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen().catch(() => {});
+      }
+    }
+  }
+
+  // --- AGREGAR Y MANIPULAR NOMBRES ---
+  addNewName() {
+    const rawName = this.nameInput.value.trim();
+    if (!rawName) return;
+
+    const newItem = {
+      id: 'item_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5),
+      name: rawName,
+      active: true,
+      color: COLOR_PALETTE[this.items.length % COLOR_PALETTE.length]
+    };
+
+    this.items.push(newItem);
+    this.nameInput.value = '';
+    this.saveState();
+    this.renderNamesList();
+    this.drawWheel();
+
+    // Scroll abajo
+    this.namesList.scrollTop = this.namesList.scrollHeight;
+  }
+
+  handleBulkAdd() {
+    const text = this.bulkTextarea.value;
+    if (!text.trim()) return;
+
+    // Separar por líneas o por comas
+    const tokens = text.split(/[\n,;]+/);
+    let addedCount = 0;
+
+    tokens.forEach(token => {
+      const name = token.trim();
+      if (name) {
+        this.items.push({
+          id: 'item_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6),
+          name: name,
+          active: true,
+          color: COLOR_PALETTE[this.items.length % COLOR_PALETTE.length]
+        });
+        addedCount++;
+      }
+    });
+
+    if (addedCount > 0) {
+      this.saveState();
+      this.renderNamesList();
+      this.drawWheel();
+    }
+    this.bulkModal.classList.remove('active');
+  }
+
+  deleteItem(id) {
+    this.items = this.items.filter(item => item.id !== id);
+    // Reasignar colores armónicamente
+    this.items.forEach((item, idx) => {
+      item.color = COLOR_PALETTE[idx % COLOR_PALETTE.length];
+    });
+    this.saveState();
+    this.renderNamesList();
+    this.drawWheel();
+  }
+
+  toggleItemActive(id, forceState = null) {
+    const item = this.items.find(i => i.id === id);
+    if (!item) return;
+
+    item.active = forceState !== null ? forceState : !item.active;
+    this.saveState();
+    this.renderNamesList();
+    this.drawWheel();
+  }
+
+  shuffleItems() {
+    if (this.isSpinning || this.items.length < 2) return;
+    
+    // Algoritmo Fisher-Yates
+    for (let i = this.items.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [this.items[i], this.items[j]] = [this.items[j], this.items[i]];
+    }
+
+    // Actualizar colores para variedad visual
+    this.items.forEach((item, idx) => {
+      item.color = COLOR_PALETTE[idx % COLOR_PALETTE.length];
+    });
+
+    this.saveState();
+    this.renderNamesList();
+    this.drawWheel();
+
+    // Pequeño sonido de barajado
+    this.sounds.playTick();
+  }
+
+  getActiveItems() {
+    return this.items.filter(item => item.active);
+  }
+
+  // --- RENDERIZADO DE LA LISTA DE NOMBRES ---
+  renderNamesList() {
+    this.namesList.innerHTML = '';
+    const activeItems = this.getActiveItems();
+
+    this.activeCountBadge.textContent = activeItems.length;
+    this.listInfoText.textContent = `${activeItems.length} activos de ${this.items.length}`;
+
+    if (this.items.length === 0) {
+      this.namesList.innerHTML = `
+        <div class="empty-state" style="padding: 1.5rem 1rem;">
+          <span class="empty-icon" style="font-size: 2rem;">📝</span>
+          <p style="font-size: 0.9rem;">No hay participantes</p>
+          <small>Escribe un nombre arriba o pega una lista</small>
+        </div>
+      `;
+      return;
+    }
+
+    this.items.forEach(item => {
+      const itemEl = document.createElement('div');
+      itemEl.className = `name-item ${!item.active ? 'disabled' : ''}`;
+
+      itemEl.innerHTML = `
+        <div class="name-item-left">
+          <input type="checkbox" class="checkbox-toggle" ${item.active ? 'checked' : ''} title="${item.active ? 'Desmarcar para esconder' : 'Marcar para activar'}">
+          <span class="name-color-dot" style="background-color: ${item.color}"></span>
+          <span class="name-text" title="${this.escapeHtml(item.name)}">${this.escapeHtml(item.name)}</span>
+        </div>
+        <div class="name-item-actions">
+          <button class="item-delete-btn" title="Eliminar participante">🗑️</button>
+        </div>
+      `;
+
+      // Eventos individuales
+      const checkbox = itemEl.querySelector('.checkbox-toggle');
+      checkbox.addEventListener('change', () => {
+        this.toggleItemActive(item.id, checkbox.checked);
+      });
+
+      const deleteBtn = itemEl.querySelector('.item-delete-btn');
+      deleteBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.deleteItem(item.id);
+      });
+
+      this.namesList.appendChild(itemEl);
+    });
+  }
+
+  // --- RENDERIZADO DEL HISTORIAL DE GANADORES ---
+  renderHistory() {
+    this.historyCountBadge.textContent = this.history.length;
+    this.historyList.innerHTML = '';
+
+    if (this.history.length === 0) {
+      this.historyList.innerHTML = `
+        <div class="empty-state">
+          <span class="empty-icon">🎯</span>
+          <p>Aún no hay ganadores seleccionados.</p>
+          <small>¡Gira la ruleta para comenzar la lista!</small>
+        </div>
+      `;
+      return;
+    }
+
+    this.history.forEach((record, index) => {
+      const rank = this.history.length - index;
+      const itemEl = document.createElement('div');
+      itemEl.className = 'history-item';
+      itemEl.innerHTML = `
+        <div class="history-item-left">
+          <span class="history-rank">#${rank}</span>
+          <span class="history-name">${this.escapeHtml(record.name)}</span>
+        </div>
+        <span class="history-time">${record.time}</span>
+      `;
+      this.historyList.appendChild(itemEl);
+    });
+  }
+
+  copyHistoryToClipboard() {
+    if (this.history.length === 0) {
+      alert('El historial está vacío.');
+      return;
+    }
+
+    const lines = this.history.map((h, i) => `${this.history.length - i}. ${h.name} (${h.time})`);
+    const text = "🏆 GANADORES DE LA RULETA 🏆\n" + lines.join("\n");
+
+    navigator.clipboard.writeText(text).then(() => {
+      alert('¡Lista de ganadores copiada al portapapeles! 📋');
+    }).catch(() => {
+      alert('No se pudo copiar automáticamente.');
+    });
+  }
+
+  // --- DIBUJADO DE LA RULETA EN CANVAS ---
+  drawWheel() {
+    const ctx = this.ctx;
+    const size = this.displaySize;
+    const cx = size / 2;
+    const cy = size / 2;
+    const radius = cx - 18;
+
+    ctx.clearRect(0, 0, size, size);
+
+    const activeItems = this.getActiveItems();
+    const count = activeItems.length;
+
+    // Si no hay participantes activos
+    if (count === 0) {
+      this.drawEmptyWheel(ctx, cx, cy, radius);
+      return;
+    }
+
+    const sliceAngle = (2 * Math.PI) / count;
+
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.rotate(this.currentAngle);
+
+    // 1. Dibujar rebanadas (Slices)
+    for (let i = 0; i < count; i++) {
+      const item = activeItems[i];
+      const startAngle = i * sliceAngle;
+      const endAngle = startAngle + sliceAngle;
+
+      // Rebanada
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.arc(0, 0, radius, startAngle, endAngle);
+      ctx.closePath();
+
+      // Gradiente suave radial para darle volumen
+      const grad = ctx.createRadialGradient(0, 0, radius * 0.1, 0, 0, radius);
+      grad.addColorStop(0, '#ffffff20');
+      grad.addColorStop(0.3, item.color);
+      grad.addColorStop(1, this.shadeColor(item.color, -20));
+
+      ctx.fillStyle = grad;
+      ctx.fill();
+
+      // Borde sutil entre rebanadas
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
+      ctx.stroke();
+
+      // Clavijas perimetrales (pegs) en cada división
+      const pegX = Math.cos(startAngle) * (radius - 8);
+      const pegY = Math.sin(startAngle) * (radius - 8);
+      ctx.beginPath();
+      ctx.arc(pegX, pegY, 4, 0, 2 * Math.PI);
+      ctx.fillStyle = '#ffffff';
+      ctx.shadowColor = 'rgba(0,0,0,0.5)';
+      ctx.shadowBlur = 4;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+
+      // 2. Texto de la rebanada
+      ctx.save();
+      ctx.rotate(startAngle + sliceAngle / 2);
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'middle';
+
+      // Ajuste dinámico de fuente según número de items
+      let fontSize = 20;
+      if (count > 24) fontSize = 12;
+      else if (count > 16) fontSize = 14;
+      else if (count > 10) fontSize = 16;
+      else if (count > 6) fontSize = 18;
+
+      ctx.font = `bold ${fontSize}px 'Outfit', sans-serif`;
+      
+      // Sombra para legibilidad del texto
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.8)';
+      ctx.shadowBlur = 6;
+      ctx.fillStyle = '#ffffff';
+
+      // Truncar texto si es muy largo para el radio
+      let label = item.name;
+      const maxTextWidth = radius - 80;
+      if (ctx.measureText(label).width > maxTextWidth) {
+        while (ctx.measureText(label + '…').width > maxTextWidth && label.length > 3) {
+          label = label.slice(0, -1);
+        }
+        label += '…';
+      }
+
+      ctx.fillText(label, radius - 26, 0);
+      ctx.restore();
+    }
+
+    ctx.restore();
+
+    // 3. Anillo exterior con luces estilo casino
+    this.drawArcadeRim(ctx, cx, cy, radius, count);
+  }
+
+  // Borde exterior decorativo con luces LED parpadeantes
+  drawArcadeRim(ctx, cx, cy, radius, count) {
+    const rimWidth = 14;
+    ctx.save();
+    
+    // Aro exterior metálico / dorado
+    const rimGrad = ctx.createLinearGradient(0, 0, cx * 2, cy * 2);
+    rimGrad.addColorStop(0, '#ffd700');
+    rimGrad.addColorStop(0.5, '#ff8c00');
+    rimGrad.addColorStop(1, '#ff007f');
+
+    ctx.beginPath();
+    ctx.arc(cx, cy, radius + rimWidth / 2, 0, 2 * Math.PI);
+    ctx.lineWidth = rimWidth;
+    ctx.strokeStyle = rimGrad;
+    ctx.stroke();
+
+    // Luces LED alrededor del borde
+    const numLights = 28;
+    const lightAngle = (2 * Math.PI) / numLights;
+    const now = Date.now() / 300;
+
+    for (let i = 0; i < numLights; i++) {
+      const angle = i * lightAngle;
+      const lx = cx + Math.cos(angle) * (radius + rimWidth / 2);
+      const ly = cy + Math.sin(angle) * (radius + rimWidth / 2);
+
+      // Alternar parpadeo
+      const isLit = this.isSpinning 
+        ? Math.sin(now * 3 + i) > 0 
+        : i % 2 === 0;
+
+      ctx.beginPath();
+      ctx.arc(lx, ly, 3.5, 0, 2 * Math.PI);
+      ctx.fillStyle = isLit ? '#ffffff' : '#ffd700';
+      if (isLit) {
+        ctx.shadowColor = '#ffffff';
+        ctx.shadowBlur = 8;
+      }
+      ctx.fill();
+      ctx.shadowBlur = 0;
+    }
+
+    ctx.restore();
+  }
+
+  drawEmptyWheel(ctx, cx, cy, radius) {
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(cx, cy, radius, 0, 2 * Math.PI);
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
+    ctx.fill();
+    ctx.lineWidth = 4;
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+    ctx.setLineDash([8, 8]);
+    ctx.stroke();
+
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = '#a0aec0';
+    ctx.font = "bold 18px 'Outfit', sans-serif";
+    ctx.fillText('¡Agrega participantes para girar!', cx, cy);
+    ctx.restore();
+  }
+
+  // --- FÍSICA Y ANIMACIÓN DEL GIRO ---
+  spin() {
+    if (this.isSpinning) return;
+
+    const activeItems = this.getActiveItems();
+    if (activeItems.length < 1) {
+      alert('¡Debes tener al menos 1 nombre activo para girar!');
+      return;
+    }
+
+    if (activeItems.length === 1) {
+      this.celebrateWinner(activeItems[0]);
+      return;
+    }
+
+    this.isSpinning = true;
+    this.setControlsDisabled(true);
+
+    // Obtener duración del giro según selector
+    const durationSeconds = parseFloat(this.spinDurationSelect.value) || 6;
+    const totalDuration = durationSeconds * 1000;
+
+    // Calcular giros completos aleatorios (entre 5 y 8 vueltas completas) + ángulo aleatorio
+    const fullSpins = 5 + Math.floor(Math.random() * 4);
+    const extraAngle = Math.random() * (2 * Math.PI);
+    const targetTotalRotation = (fullSpins * 2 * Math.PI) + extraAngle;
+
+    const startAngle = this.currentAngle;
+    const targetAngle = startAngle + targetTotalRotation;
+
+    const startTime = performance.now();
+    this.lastPegIndex = -1;
+
+    const sliceAngle = (2 * Math.PI) / activeItems.length;
+    const topAngle = 1.5 * Math.PI; // 270 grados (donde apunta la aguja superior)
+
+    // Curva de desaceleración realista: easeOutQuint o easeOutCubic
+    const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
+    const easeOutQuint = (t) => 1 - Math.pow(1 - t, 5);
+
+    const animate = (currentTime) => {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / totalDuration, 1);
+      
+      // Aplicar easing
+      const easedProgress = easeOutQuint(progress);
+      this.currentAngle = startAngle + (targetTotalRotation * easedProgress);
+
+      // Calcular clavija actual bajo la aguja para emitir el "clack" y animar el flapper
+      let relativeAngle = (topAngle - (this.currentAngle % (2 * Math.PI))) % (2 * Math.PI);
+      if (relativeAngle < 0) relativeAngle += 2 * Math.PI;
+      const currentPeg = Math.floor(relativeAngle / sliceAngle);
+
+      if (currentPeg !== this.lastPegIndex) {
+        this.lastPegIndex = currentPeg;
+        this.triggerNeedleTick();
+      }
+
+      this.drawWheel();
+
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      } else {
+        this.currentAngle = targetAngle % (2 * Math.PI);
+        this.drawWheel();
+        this.isSpinning = false;
+        this.setControlsDisabled(false);
+
+        // Determinar ganador
+        const winningIndex = this.getWinningIndex(activeItems.length);
+        const winner = activeItems[winningIndex];
+        this.celebrateWinner(winner);
+      }
+    };
+
+    requestAnimationFrame(animate);
+  }
+
+  // Calcula exactamente qué rebanada está bajo la aguja en el tope (270°)
+  getWinningIndex(totalActive) {
+    const topAngle = 1.5 * Math.PI;
+    const sliceAngle = (2 * Math.PI) / totalActive;
+
+    let relativeAngle = (topAngle - (this.currentAngle % (2 * Math.PI))) % (2 * Math.PI);
+    if (relativeAngle < 0) relativeAngle += 2 * Math.PI;
+
+    return Math.floor(relativeAngle / sliceAngle);
+  }
+
+  // Sacudida física de la aguja con sonido
+  triggerNeedleTick() {
+    this.sounds.playTick();
+    this.pointer.classList.remove('tick-bump');
+    // Forzar reflow para reiniciar animación CSS
+    void this.pointer.offsetWidth;
+    this.pointer.classList.add('tick-bump');
+  }
+
+  setControlsDisabled(disabled) {
+    this.spinBtn.disabled = disabled;
+    this.centerSpinBtn.disabled = disabled;
+    this.shuffleBtn.disabled = disabled;
+    this.resetWheelBtn.disabled = disabled;
+  }
+
+  // --- CELEBRACIÓN Y MODAL DE GANADOR ---
+  celebrateWinner(winner) {
+    this.lastWinner = winner;
+
+    // Registrar en historial
+    const now = new Date();
+    const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    this.history.unshift({
+      id: 'win_' + Date.now(),
+      name: winner.name,
+      time: timeStr
+    });
+    this.saveState();
+    this.renderHistory();
+
+    // Reproducir fanfarria de victoria
+    this.sounds.playVictory();
+
+    // Disparar confeti global y en el modal
+    this.globalConfetti.explode(180);
+    setTimeout(() => {
+      this.modalConfetti.explode(120);
+    }, 250);
+
+    // Preparar y mostrar modal
+    this.winnerNameText.textContent = winner.name;
+    this.winnerSubtitle.textContent = `¡Seleccionado en el giro #${this.history.length}!`;
+    this.winnerModal.classList.add('active');
+  }
+
+  closeWinnerModal() {
+    this.winnerModal.classList.remove('active');
+    this.modalConfetti.stop();
+  }
+
+  // --- UTILIDADES ---
+  escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
+  shadeColor(color, percent) {
+    let R = parseInt(color.substring(1, 3), 16);
+    let G = parseInt(color.substring(3, 5), 16);
+    let B = parseInt(color.substring(5, 7), 16);
+
+    R = parseInt((R * (100 + percent)) / 100);
+    G = parseInt((G * (100 + percent)) / 100);
+    B = parseInt((B * (100 + percent)) / 100);
+
+    R = (R < 255) ? R : 255;
+    G = (G < 255) ? G : 255;
+    B = (B < 255) ? B : 255;
+
+    const RR = ((R.toString(16).length === 1) ? '0' + R.toString(16) : R.toString(16));
+    const GG = ((G.toString(16).length === 1) ? '0' + G.toString(16) : G.toString(16));
+    const BB = ((B.toString(16).length === 1) ? '0' + B.toString(16) : B.toString(16));
+
+    return '#' + RR + GG + BB;
+  }
+}
+
+// Iniciar aplicación cuando el DOM esté listo
+window.addEventListener('DOMContentLoaded', () => {
+  sincronizarEnlacesOficiales();
+  window.app = new RouletteApp();
+});
+
+</script>
+</body>
+</html>
