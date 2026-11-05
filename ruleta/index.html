@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TecDocente Pro • Ruleta Escolar Interactiva</title>
-  <meta name="author" content="Mtro. Jorge Luis Meza Aldana">
+  <meta name="author" content="TecDocente Pro">
   <meta name="description" content="Herramienta gratuita 100% offline para participaciones y dinámicas en aula. Desarrollada por TecDocente Pro.">
   <meta name="theme-color" content="#060c1f">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -58,11 +58,18 @@
   --shadow-glow: 0 0 28px rgba(14, 165, 233, 0.35);
 }
 
-/* Reset & Base */
+/* Reset & Base - Mobile-First Zero-Overflow */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+html, body {
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
@@ -70,7 +77,6 @@ body {
   background-color: var(--bg-dark);
   color: var(--text-primary);
   min-height: 100vh;
-  overflow-x: hidden;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -79,10 +85,9 @@ body {
 /* Animated Ambient Blobs + Subtle Tech Grid */
 .app-background {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   z-index: -1;
   overflow: hidden;
   pointer-events: none;
@@ -134,15 +139,21 @@ body {
   100% { transform: translate(-40px, 70px) scale(0.95); }
 }
 
-/* App Container */
+/* App Container (Mobile-first padding: 12px, Desktop: 1.5rem) */
 .app-container {
   max-width: 1380px;
   width: 100%;
   margin: 0 auto;
-  padding: 1.25rem 1.5rem 1.5rem;
+  padding: 12px;
   display: flex;
   flex-direction: column;
   flex: 1;
+}
+
+@media (min-width: 768px) {
+  .app-container {
+    padding: 1.5rem;
+  }
 }
 
 /* Header */
@@ -152,7 +163,8 @@ body {
   align-items: center;
   gap: 1rem;
   flex-wrap: wrap;
-  padding-bottom: 1.1rem;
+  width: 100%;
+  padding-bottom: 1rem;
   margin-bottom: 1rem;
   border-bottom: 1px solid var(--card-border);
 }
@@ -160,12 +172,14 @@ body {
 .logo-group {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 14px;
+  min-width: 0;
+  flex: 1 1 260px;
 }
 
 .logo-svg-wrap {
-  width: 58px;
-  height: 58px;
+  width: 56px;
+  height: 56px;
   flex-shrink: 0;
   border-radius: 16px;
   background: linear-gradient(145deg, rgba(14, 165, 233, 0.18), rgba(13, 25, 58, 0.95));
@@ -191,23 +205,30 @@ body {
   50% { transform: translateY(-3px) scale(1.03); }
 }
 
+.logo-text {
+  min-width: 0;
+  flex: 1;
+}
+
 .logo-text h1 {
   font-family: var(--font-fun);
-  font-size: clamp(1.35rem, 2.4vw, 1.85rem);
+  font-size: clamp(1.2rem, 2.5vw, 1.85rem);
   font-weight: 700;
-  letter-spacing: 0.6px;
+  letter-spacing: 0.5px;
   background: linear-gradient(135deg, #ffffff 0%, #38bdf8 52%, #00f2fe 80%, #fbbf24 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   text-shadow: 0 2px 18px rgba(14, 165, 233, 0.28);
-  line-height: 1.15;
+  line-height: 1.18;
+  word-wrap: break-word;
 }
 
 .logo-text p {
   color: #cbd5e1;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   font-weight: 500;
   margin-top: 3px;
+  line-height: 1.35;
 }
 
 .header-actions {
@@ -223,12 +244,14 @@ body {
   border: 1px solid rgba(167, 243, 208, 0.55);
   color: #021814;
   border-radius: var(--radius-full);
+  min-height: 44px;
   padding: 9px 18px;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   font-family: var(--font-main);
-  font-size: 0.88rem;
+  font-size: 0.9rem;
   font-weight: 800;
   letter-spacing: 0.2px;
   cursor: pointer;
@@ -237,6 +260,7 @@ body {
     0 4px 18px rgba(16, 185, 129, 0.38),
     0 0 16px rgba(6, 182, 212, 0.28),
     inset 0 1px 0 rgba(255, 255, 255, 0.55);
+  touch-action: manipulation;
 }
 
 .btn-download-offline:hover {
@@ -249,7 +273,7 @@ body {
 }
 
 .btn-download-offline:active {
-  transform: translateY(0) scale(0.98);
+  transform: translateY(0) scale(0.97);
 }
 
 .icon-btn {
@@ -257,22 +281,29 @@ body {
   border: 1px solid var(--card-border);
   color: var(--text-primary);
   border-radius: var(--radius-full);
+  min-height: 44px;
   padding: 8px 16px;
-  display: flex;
+  display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   font-family: var(--font-main);
-  font-size: 0.88rem;
+  font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
   backdrop-filter: blur(10px);
+  touch-action: manipulation;
 }
 
 .icon-btn:hover {
   background: var(--bg-card-hover);
   border-color: var(--card-border-hover);
   transform: translateY(-2px);
+}
+
+.icon-btn:active {
+  transform: scale(0.97);
 }
 
 .icon-btn.muted {
@@ -285,16 +316,17 @@ body {
    ========================================================== */
 .promo-banner-top {
   position: relative;
+  width: 100%;
   background: linear-gradient(135deg, rgba(13, 29, 74, 0.95) 0%, rgba(30, 27, 94, 0.92) 52%, rgba(9, 34, 72, 0.96) 100%);
   border: 1px solid rgba(56, 189, 248, 0.35);
   border-left: 4px solid var(--gold);
   border-radius: var(--radius-md);
   padding: 0.9rem 1.15rem;
-  margin-bottom: 1.35rem;
+  margin-bottom: 1.1rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
+  gap: 0.95rem;
   flex-wrap: wrap;
   box-shadow:
     0 10px 28px rgba(2, 6, 23, 0.5),
@@ -304,7 +336,8 @@ body {
 }
 
 .promo-banner-copy {
-  flex: 1 1 380px;
+  flex: 1 1 280px;
+  min-width: 0;
   font-size: 0.92rem;
   line-height: 1.45;
   color: #e2e8f0;
@@ -328,17 +361,19 @@ body {
   align-items: center;
   justify-content: center;
   gap: 6px;
+  min-height: 40px;
   padding: 8px 13px;
   border-radius: 10px;
   font-family: var(--font-main);
-  font-size: 0.82rem;
+  font-size: 0.84rem;
   font-weight: 700;
   text-decoration: none;
-  white-space: nowrap;
+  text-align: center;
   transition: all 0.2s ease;
   border: 1px solid rgba(56, 189, 248, 0.32);
   background: rgba(14, 165, 233, 0.14);
   color: #f0f9ff;
+  touch-action: manipulation;
 }
 
 .promo-btn:hover {
@@ -346,6 +381,10 @@ body {
   border-color: rgba(125, 211, 252, 0.65);
   transform: translateY(-2px);
   box-shadow: 0 6px 16px rgba(14, 165, 233, 0.25);
+}
+
+.promo-btn:active {
+  transform: scale(0.97);
 }
 
 .promo-btn-reel {
@@ -374,46 +413,197 @@ body {
     0 0 18px rgba(16, 185, 129, 0.4);
 }
 
-@media (max-width: 768px) {
+/* Header & Promo Banner Responsive < 768px */
+@media (max-width: 767.98px) {
   .main-header {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
+    gap: 12px;
+  }
+  .logo-group {
+    flex: 1 1 auto;
+    width: 100%;
+  }
+  .logo-svg-wrap {
+    width: 50px;
+    height: 50px;
   }
   .header-actions {
     width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
   }
   .btn-download-offline {
-    flex: 1 1 100%;
-    justify-content: center;
+    grid-column: 1 / -1;
+    width: 100%;
+    min-height: 46px;
+    font-size: 0.92rem;
+    padding: 10px 14px;
+  }
+  .icon-btn {
+    width: 100%;
+    min-height: 44px;
+    font-size: 0.92rem;
+    padding: 10px 12px;
+  }
+  .promo-banner-top {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0.85rem 0.95rem;
+    gap: 10px;
+  }
+  .promo-banner-copy {
+    flex: 1 1 auto;
+    font-size: 0.92rem;
   }
   .promo-banner-actions {
     width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
   }
   .promo-btn {
-    flex: 1 1 calc(50% - 6px);
-    text-align: center;
+    width: 100%;
+    min-height: 44px;
+    font-size: 0.92rem;
+    padding: 10px 12px;
   }
 }
 
 @media (max-width: 480px) {
-  .promo-btn {
-    flex: 1 1 100%;
+  .promo-banner-actions {
+    grid-template-columns: 1fr;
   }
 }
 
-/* Grid Layout */
+/* ==========================================================
+   SELECTOR DE MODO PRINCIPAL (.main-mode-switcher)
+   ========================================================== */
+.main-mode-switcher {
+  width: 100%;
+  background: rgba(6, 12, 31, 0.82);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  border-radius: 18px;
+  padding: 6px;
+  margin-bottom: 1.35rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  box-shadow:
+    0 10px 28px rgba(2, 6, 23, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(12px);
+}
+
+.mode-pill-btn {
+  border: 1px solid transparent;
+  background: rgba(13, 25, 58, 0.45);
+  color: var(--text-secondary);
+  border-radius: 13px;
+  min-height: 50px;
+  padding: 10px 16px;
+  font-family: var(--font-fun);
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+  touch-action: manipulation;
+  text-align: center;
+}
+
+.mode-pill-btn .mode-icon {
+  font-size: 1.25rem;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.mode-pill-btn:hover:not(.active) {
+  color: var(--text-primary);
+  background: rgba(20, 38, 84, 0.78);
+  border-color: rgba(56, 189, 248, 0.25);
+  transform: translateY(-1px);
+}
+
+.mode-pill-btn:active {
+  transform: scale(0.98);
+}
+
+.mode-pill-btn.active {
+  background: linear-gradient(135deg, #0284c7 0%, #0ea5e9 52%, #10b981 100%);
+  color: #ffffff;
+  border-color: rgba(186, 230, 253, 0.7);
+  box-shadow:
+    0 6px 22px rgba(14, 165, 233, 0.42),
+    0 0 16px rgba(16, 185, 129, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+}
+
+.mode-pill-btn.active .mode-icon {
+  transform: scale(1.15) rotate(-4deg);
+}
+
+@media (max-width: 580px) {
+  .main-mode-switcher {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+  .mode-pill-btn {
+    min-height: 48px;
+    font-size: 0.98rem;
+    padding: 10px 14px;
+  }
+}
+
+/* ==========================================================
+   GRID PRINCIPAL FLUIDO (< 980px = 1fr)
+   ========================================================== */
 .main-grid {
   display: grid;
-  grid-template-columns: 1fr 410px;
+  grid-template-columns: minmax(0, 1fr) 400px;
   gap: 2rem;
   align-items: start;
+  width: 100%;
   flex: 1;
 }
 
-@media (max-width: 1024px) {
+.workspace-main-col,
+.sidebar-section {
+  min-width: 0;
+  width: 100%;
+}
+
+@media (max-width: 979.98px) {
   .main-grid {
     grid-template-columns: 1fr;
-    gap: 2rem;
+    gap: 1.5rem;
+  }
+}
+
+/* Animación suave entre modos */
+.mode-view:not(.active) {
+  display: none !important;
+}
+
+.mode-view.active {
+  display: flex;
+  width: 100%;
+  animation: view-fade-up 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes view-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
@@ -423,8 +613,9 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 1.5rem;
+  gap: 1.4rem;
   position: relative;
+  width: 100%;
 }
 
 .wheel-stage {
@@ -432,7 +623,8 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 10px;
+  padding: 8px;
+  max-width: 100%;
 }
 
 .wheel-wrapper {
@@ -456,6 +648,7 @@ body {
 #wheelCanvas {
   width: 100%;
   height: 100%;
+  max-width: 100%;
   border-radius: 50%;
   display: block;
 }
@@ -517,6 +710,7 @@ body {
   justify-content: center;
   transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
   user-select: none;
+  touch-action: manipulation;
 }
 
 .center-spin-btn:hover {
@@ -560,12 +754,41 @@ body {
   opacity: 0.95;
 }
 
+/* Ajuste estricto de Ruleta para Móviles (< 600px) */
+@media (max-width: 599.98px) {
+  .wheel-wrapper {
+    width: min(90vw, 370px);
+    height: min(90vw, 370px);
+    padding: 6px;
+  }
+  .center-spin-btn {
+    width: 76px;
+    height: 76px;
+    border-width: 3.5px;
+  }
+  .spin-text {
+    font-size: 0.95rem;
+    letter-spacing: 0.5px;
+  }
+  .spin-sub {
+    font-size: 0.54rem;
+    letter-spacing: 0.5px;
+  }
+  .wheel-pointer-container {
+    top: -14px;
+  }
+  .wheel-pointer {
+    width: 36px;
+    height: 44px;
+  }
+}
+
 /* Wheel Controls Below */
 .wheel-controls {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
+  gap: 0.95rem;
   width: 100%;
   max-width: 480px;
 }
@@ -582,6 +805,7 @@ body {
   gap: 8px;
   transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1);
   text-decoration: none;
+  touch-action: manipulation;
 }
 
 .btn-primary {
@@ -602,8 +826,9 @@ body {
 
 .btn-huge {
   width: 100%;
-  padding: 1.1rem 2rem;
-  font-size: 1.35rem;
+  min-height: 54px;
+  padding: 1rem 1.5rem;
+  font-size: clamp(1.12rem, 3.5vw, 1.35rem);
   font-family: var(--font-fun);
   letter-spacing: 0.5px;
   border-radius: var(--radius-lg);
@@ -634,6 +859,10 @@ body {
   transform: translateY(-1px);
 }
 
+.btn-secondary:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
 .btn-accent {
   background: linear-gradient(135deg, #10b981, #059669);
   color: #ffffff;
@@ -644,6 +873,10 @@ body {
   background: linear-gradient(135deg, #34d399, #10b981);
   transform: translateY(-1px);
   box-shadow: 0 4px 15px var(--accent-glow);
+}
+
+.btn-accent:active:not(:disabled) {
+  transform: scale(0.97);
 }
 
 .btn-warning {
@@ -657,13 +890,15 @@ body {
 }
 
 .btn-large {
-  padding: 0.85rem 1.6rem;
-  font-size: 1.05rem;
+  min-height: 46px;
+  padding: 0.85rem 1.4rem;
+  font-size: 1.02rem;
 }
 
 .btn-sm {
-  padding: 6px 12px;
-  font-size: 0.85rem;
+  min-height: 40px;
+  padding: 7px 14px;
+  font-size: 0.9rem;
 }
 
 .btn-danger-soft {
@@ -685,15 +920,16 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
   width: 100%;
-  gap: 10px;
+  gap: 8px;
 }
 
 .spin-speed-selector {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   color: var(--text-secondary);
 }
 
@@ -702,8 +938,10 @@ body {
   border: 1px solid var(--card-border);
   color: var(--text-primary);
   border-radius: var(--radius-sm);
-  padding: 5px 8px;
-  font-size: 0.82rem;
+  min-height: 40px;
+  padding: 6px 10px;
+  font-size: 16px;
+  font-family: var(--font-main);
   outline: none;
   cursor: pointer;
 }
@@ -711,6 +949,680 @@ body {
 .form-select-sm option {
   background: #0b1533;
   color: white;
+}
+
+@media (max-width: 599.98px) {
+  .quick-options > .btn-sm {
+    flex: 1 1 calc(50% - 6px);
+    min-height: 44px;
+    font-size: 0.92rem;
+  }
+  .spin-speed-selector {
+    flex: 1 1 100%;
+    justify-content: space-between;
+    background: rgba(13, 25, 58, 0.65);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-sm);
+    padding: 6px 12px;
+    min-height: 44px;
+  }
+}
+
+/* ==========================================================
+   CREADOR DE EQUIPOS AL AZAR (.teams-section)
+   ========================================================== */
+.teams-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  width: 100%;
+}
+
+.teams-config-card {
+  background: var(--bg-card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+  backdrop-filter: blur(14px);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  gap: 1.05rem;
+  width: 100%;
+}
+
+.teams-config-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding-bottom: 0.85rem;
+  border-bottom: 1px solid rgba(56, 189, 248, 0.16);
+}
+
+.teams-config-title h2 {
+  font-family: var(--font-fun);
+  font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.teams-config-title p {
+  font-size: 0.86rem;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+.teams-active-pill-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.teams-active-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(16, 185, 129, 0.16);
+  border: 1px solid rgba(16, 185, 129, 0.42);
+  color: #6ee7b7;
+  font-size: 0.84rem;
+  font-weight: 800;
+  padding: 6px 12px;
+  border-radius: var(--radius-full);
+}
+
+.teams-jump-list-btn {
+  background: rgba(14, 165, 233, 0.14);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  color: #bae6fd;
+  border-radius: var(--radius-full);
+  padding: 6px 12px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: var(--font-main);
+}
+
+.teams-jump-list-btn:hover {
+  background: rgba(14, 165, 233, 0.26);
+  color: #ffffff;
+}
+
+/* Modalidad de División */
+.config-block {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.config-label {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #e2e8f0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.split-mode-toggle {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  background: rgba(3, 8, 23, 0.55);
+  padding: 5px;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+}
+
+.split-mode-btn {
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-secondary);
+  border-radius: 10px;
+  min-height: 44px;
+  padding: 8px 12px;
+  font-family: var(--font-main);
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+  text-align: center;
+  touch-action: manipulation;
+}
+
+.split-mode-btn:hover:not(.active) {
+  color: #ffffff;
+  background: rgba(56, 189, 248, 0.08);
+}
+
+.split-mode-btn.active {
+  background: linear-gradient(135deg, rgba(14, 165, 233, 0.28), rgba(37, 99, 235, 0.36));
+  border-color: rgba(56, 189, 248, 0.6);
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(14, 165, 233, 0.22);
+}
+
+@media (max-width: 560px) {
+  .split-mode-toggle {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Botones rápidos numéricos + Input libre */
+.number-picker-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.quick-nums-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  flex: 1 1 auto;
+}
+
+.quick-num-btn {
+  min-width: 48px;
+  min-height: 46px;
+  padding: 0 14px;
+  border-radius: 12px;
+  border: 1.5px solid rgba(56, 189, 248, 0.26);
+  background: rgba(3, 8, 23, 0.55);
+  color: #e2e8f0;
+  font-family: var(--font-fun);
+  font-size: 1.08rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+  touch-action: manipulation;
+}
+
+.quick-num-btn:hover {
+  border-color: var(--primary);
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+.quick-num-btn:active {
+  transform: scale(0.94);
+}
+
+.quick-num-btn.active {
+  background: linear-gradient(135deg, #0ea5e9, #10b981);
+  border-color: #a7f3d0;
+  color: #031525;
+  box-shadow: 0 0 18px rgba(14, 165, 233, 0.45);
+  transform: scale(1.05);
+}
+
+.custom-num-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(3, 8, 23, 0.55);
+  border: 1.5px solid var(--card-border);
+  border-radius: 12px;
+  padding: 4px 10px;
+  min-height: 46px;
+}
+
+.custom-num-input-wrap:focus-within {
+  border-color: var(--primary);
+  box-shadow: 0 0 14px var(--primary-glow);
+}
+
+.custom-num-input-wrap label {
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.custom-num-input-wrap input {
+  width: 68px;
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  font-family: var(--font-main);
+  font-size: 16px;
+  font-weight: 700;
+  outline: none;
+  text-align: center;
+}
+
+/* Grid opciones extra (Sobrantes y Nombres Épicos) */
+.team-options-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+@media (max-width: 680px) {
+  .team-options-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.form-select-tech {
+  width: 100%;
+  min-height: 46px;
+  background: rgba(3, 8, 23, 0.62);
+  border: 1.5px solid var(--card-border);
+  border-radius: 12px;
+  padding: 10px 12px;
+  color: var(--text-primary);
+  font-family: var(--font-main);
+  font-size: 16px;
+  font-weight: 600;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-select-tech:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 14px var(--primary-glow);
+}
+
+.form-select-tech option {
+  background: #0b1533;
+  color: #ffffff;
+}
+
+/* Resumen en vivo de cálculo de equipos */
+.team-math-preview {
+  background: rgba(14, 165, 233, 0.1);
+  border: 1px dashed rgba(56, 189, 248, 0.38);
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-size: 0.88rem;
+  color: #bae6fd;
+  font-weight: 600;
+  line-height: 1.4;
+  text-align: center;
+}
+
+/* Arena de Equipos / Vórtice de Sorteo / Resultados */
+.teams-arena {
+  width: 100%;
+  min-height: 250px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.teams-initial-placeholder {
+  background: rgba(13, 25, 58, 0.55);
+  border: 1px dashed rgba(56, 189, 248, 0.28);
+  border-radius: var(--radius-lg);
+  padding: 2.4rem 1.25rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.teams-initial-placeholder .placeholder-emoji {
+  font-size: 3rem;
+  animation: gentle-wobble 4s ease-in-out infinite;
+}
+
+.teams-initial-placeholder h3 {
+  font-family: var(--font-fun);
+  font-size: 1.22rem;
+  color: #f8fafc;
+}
+
+.teams-initial-placeholder p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  max-width: 440px;
+}
+
+/* Vórtice de Sorteo en Vivo (2.2 segundos) */
+.vortex-stage {
+  position: relative;
+  background: radial-gradient(circle at center, rgba(14, 165, 233, 0.22) 0%, rgba(13, 25, 58, 0.95) 68%, rgba(6, 12, 31, 0.98) 100%);
+  border: 1.5px solid rgba(0, 242, 254, 0.5);
+  border-radius: var(--radius-lg);
+  padding: 2rem 1.2rem;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  min-height: 310px;
+  box-shadow:
+    0 0 45px rgba(14, 165, 233, 0.3),
+    inset 0 0 35px rgba(0, 242, 254, 0.14);
+}
+
+.vortex-orbital-ring {
+  position: absolute;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  border: 2px dashed rgba(0, 242, 254, 0.32);
+  animation: vortex-rotate 3s linear infinite;
+  pointer-events: none;
+}
+
+.vortex-orbital-ring.ring-2 {
+  width: 190px;
+  height: 190px;
+  border-color: rgba(16, 185, 129, 0.38);
+  animation-direction: reverse;
+  animation-duration: 2.1s;
+}
+
+@keyframes vortex-rotate {
+  0% { transform: rotate(0deg) scale(0.96); }
+  50% { transform: rotate(180deg) scale(1.05); }
+  100% { transform: rotate(360deg) scale(0.96); }
+}
+
+.vortex-cards-cloud {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  max-width: 560px;
+  width: 100%;
+}
+
+.vortex-floating-chip {
+  padding: 8px 15px;
+  border-radius: var(--radius-full);
+  background: rgba(6, 18, 46, 0.88);
+  border: 1.5px solid #00f2fe;
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 0.92rem;
+  box-shadow: 0 0 18px rgba(0, 242, 254, 0.55);
+  animation: chip-jitter 0.26s infinite alternate ease-in-out;
+  will-change: transform, filter;
+}
+
+.vortex-floating-chip:nth-child(even) {
+  border-color: #10b981;
+  box-shadow: 0 0 18px rgba(16, 185, 129, 0.55);
+  animation-duration: 0.22s;
+}
+
+.vortex-floating-chip:nth-child(3n) {
+  border-color: #fbbf24;
+  box-shadow: 0 0 18px rgba(251, 191, 36, 0.55);
+  animation-duration: 0.3s;
+}
+
+@keyframes chip-jitter {
+  0% {
+    transform: translate(-4px, -5px) scale(0.95) rotate(-2deg);
+    filter: blur(0.6px) brightness(1.05);
+  }
+  100% {
+    transform: translate(4px, 5px) scale(1.06) rotate(2deg);
+    filter: blur(0px) brightness(1.25);
+  }
+}
+
+.vortex-status-box {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.vortex-status-text {
+  font-family: var(--font-fun);
+  font-size: 1.08rem;
+  color: #fde68a;
+  text-shadow: 0 0 12px rgba(251, 191, 36, 0.45);
+  text-align: center;
+}
+
+.vortex-progress-track {
+  width: 100%;
+  height: 12px;
+  background: rgba(3, 8, 23, 0.8);
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  padding: 2px;
+}
+
+.vortex-progress-fill {
+  height: 100%;
+  width: 0%;
+  border-radius: var(--radius-full);
+  background: linear-gradient(90deg, #0ea5e9, #00f2fe, #10b981, #fbbf24);
+  background-size: 200% 100%;
+  box-shadow: 0 0 14px rgba(0, 242, 254, 0.8);
+  transition: width 0.08s linear;
+  animation: creator-shimmer 1.2s linear infinite;
+}
+
+/* Barra Post-Sorteo de Equipos */
+.teams-post-toolbar {
+  background: rgba(13, 25, 58, 0.9);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  border-radius: var(--radius-md);
+  padding: 0.85rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.teams-post-summary {
+  font-family: var(--font-fun);
+  font-size: 1.05rem;
+  color: #f8fafc;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.teams-post-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 640px) {
+  .teams-post-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .teams-post-actions {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .teams-post-actions .btn {
+    width: 100%;
+    min-height: 46px;
+    font-size: 0.94rem;
+  }
+}
+
+/* Grid de Tarjetas de Equipos */
+.teams-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1rem;
+  width: 100%;
+}
+
+@media (max-width: 560px) {
+  .teams-cards-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.team-card {
+  background: rgba(11, 22, 52, 0.92);
+  border: 1.5px solid var(--team-border, rgba(56, 189, 248, 0.35));
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 12px 28px rgba(2, 6, 23, 0.55);
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  transform: scale(0.72) translateY(28px);
+  transition:
+    opacity 0.38s ease,
+    transform 0.52s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.25s ease;
+}
+
+.team-card.revealed {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+.team-card.revealed:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 16px 34px rgba(2, 6, 23, 0.7),
+    0 0 22px var(--team-glow, rgba(14, 165, 233, 0.28));
+}
+
+.team-card-header {
+  background: var(--team-grad, linear-gradient(135deg, #0284c7, #0ea5e9));
+  padding: 0.85rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  color: #ffffff;
+}
+
+.team-card-title-group {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+}
+
+.team-shield-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  flex-shrink: 0;
+}
+
+.team-card-heading {
+  min-width: 0;
+}
+
+.team-card-heading h4 {
+  font-family: var(--font-fun);
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #ffffff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+  word-break: break-word;
+}
+
+.team-card-heading small {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.9);
+  opacity: 0.92;
+}
+
+.team-count-pill {
+  background: rgba(3, 8, 23, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #ffffff;
+  font-size: 0.74rem;
+  font-weight: 800;
+  padding: 4px 9px;
+  border-radius: var(--radius-full);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.team-members-list {
+  list-style: none;
+  padding: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  flex: 1;
+}
+
+.team-member-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(56, 189, 248, 0.14);
+  border-radius: 10px;
+  padding: 7px 10px;
+  transition: background 0.18s ease, transform 0.18s ease;
+}
+
+.team-member-item:hover {
+  background: rgba(56, 189, 248, 0.1);
+  transform: translateX(2px);
+}
+
+.member-num-badge {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--team-badge-bg, rgba(14, 165, 233, 0.22));
+  border: 1px solid var(--team-border, rgba(56, 189, 248, 0.45));
+  color: #ffffff;
+  font-size: 0.76rem;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.member-name-label {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #f1f5f9;
+  word-break: break-word;
+  line-height: 1.25;
 }
 
 /* Sidebar Section */
@@ -734,10 +1646,11 @@ body {
   background: transparent;
   border: none;
   color: var(--text-secondary);
-  padding: 10px 14px;
+  min-height: 44px;
+  padding: 10px 12px;
   border-radius: var(--radius-sm);
   font-family: var(--font-main);
-  font-size: 0.95rem;
+  font-size: 0.94rem;
   font-weight: 700;
   cursor: pointer;
   display: flex;
@@ -745,11 +1658,16 @@ body {
   justify-content: center;
   gap: 8px;
   transition: all 0.2s ease;
+  touch-action: manipulation;
 }
 
 .tab-btn:hover {
   color: var(--text-primary);
   background: rgba(56, 189, 248, 0.08);
+}
+
+.tab-btn:active {
+  transform: scale(0.98);
 }
 
 .tab-btn.active {
@@ -779,6 +1697,7 @@ body {
 
 .tab-content.active {
   display: block;
+  animation: view-fade-up 0.25s ease-out;
 }
 
 /* Panel Card */
@@ -786,13 +1705,13 @@ body {
   background: var(--bg-card);
   border: 1px solid var(--card-border);
   border-radius: var(--radius-lg);
-  padding: 1.2rem;
+  padding: 1.15rem;
   backdrop-filter: blur(14px);
   box-shadow: var(--shadow-lg);
   display: flex;
   flex-direction: column;
   gap: 12px;
-  min-height: 420px;
+  min-height: 410px;
 }
 
 /* Tarjeta Promocional Lateral (.promo-sidebar-card) */
@@ -833,7 +1752,7 @@ body {
 }
 
 .promo-sidebar-card p {
-  font-size: 0.82rem;
+  font-size: 0.84rem;
   color: #cbd5e1;
   line-height: 1.42;
 }
@@ -850,13 +1769,15 @@ body {
   align-items: center;
   justify-content: center;
   gap: 6px;
+  min-height: 44px;
   padding: 8px 10px;
   border-radius: 10px;
-  font-size: 0.8rem;
+  font-size: 0.84rem;
   font-weight: 700;
   text-decoration: none;
   transition: all 0.2s ease;
   text-align: center;
+  touch-action: manipulation;
 }
 
 .promo-sidebar-btn.fb-follow {
@@ -884,27 +1805,30 @@ body {
   transform: translateY(-2px);
 }
 
-@media (max-width: 420px) {
+@media (max-width: 440px) {
   .promo-sidebar-links {
     grid-template-columns: 1fr;
   }
 }
 
-/* Add Name Form */
+/* Add Name Form (font-size: 16px evita auto-zoom en iOS/Android) */
 .add-name-form .input-group {
   display: flex;
   gap: 8px;
+  width: 100%;
 }
 
 .input-group input {
   flex: 1;
+  min-width: 0;
+  min-height: 46px;
   background: rgba(3, 8, 23, 0.55);
   border: 1.5px solid var(--card-border);
   border-radius: var(--radius-md);
-  padding: 12px 14px;
+  padding: 10px 14px;
   color: var(--text-primary);
   font-family: var(--font-main);
-  font-size: 0.95rem;
+  font-size: 16px;
   outline: none;
   transition: all 0.2s ease;
 }
@@ -919,49 +1843,72 @@ body {
   color: var(--text-muted);
 }
 
+.add-name-form #addNameBtn {
+  min-height: 46px;
+  padding: 0 16px;
+  flex-shrink: 0;
+}
+
+@media (max-width: 400px) {
+  .add-name-form .input-group {
+    flex-direction: column;
+  }
+  .add-name-form #addNameBtn {
+    width: 100%;
+  }
+}
+
 /* List Toolbar */
 .list-toolbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 4px 2px;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 6px 2px;
   border-bottom: 1px solid rgba(56, 189, 248, 0.12);
 }
 
 .list-info {
-  font-size: 0.85rem;
+  font-size: 0.86rem;
   color: var(--text-secondary);
   font-weight: 600;
 }
 
 .toolbar-actions {
   display: flex;
-  gap: 12px;
+  gap: 10px;
 }
 
 .btn-link {
-  background: none;
-  border: none;
+  background: rgba(56, 189, 248, 0.08);
+  border: 1px solid rgba(56, 189, 248, 0.2);
   color: #38bdf8;
-  font-size: 0.82rem;
-  font-weight: 600;
+  font-size: 0.84rem;
+  font-weight: 700;
+  font-family: var(--font-main);
   cursor: pointer;
-  padding: 2px 4px;
-  border-radius: 4px;
-  transition: color 0.15s ease;
+  min-height: 36px;
+  padding: 5px 10px;
+  border-radius: 8px;
+  transition: all 0.15s ease;
+  touch-action: manipulation;
 }
 
 .btn-link:hover {
-  text-decoration: underline;
-  color: #7dd3fc;
+  background: rgba(56, 189, 248, 0.18);
+  color: #bae6fd;
 }
 
 .btn-link-danger {
+  background: rgba(239, 68, 68, 0.08);
+  border-color: rgba(239, 68, 68, 0.22);
   color: #f87171;
 }
 
 .btn-link-danger:hover {
-  color: #ef4444;
+  background: rgba(239, 68, 68, 0.18);
+  color: #fecaca;
 }
 
 /* Names List Scrollable */
@@ -1005,7 +1952,8 @@ body {
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(56, 189, 248, 0.14);
   border-radius: var(--radius-sm);
-  padding: 8px 12px;
+  padding: 8px 10px;
+  min-height: 44px;
   gap: 10px;
   transition: all 0.2s ease;
 }
@@ -1031,6 +1979,7 @@ body {
   align-items: center;
   gap: 10px;
   flex: 1;
+  min-width: 0;
   overflow: hidden;
 }
 
@@ -1048,19 +1997,20 @@ body {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 200px;
 }
 
 .name-item-actions {
   display: flex;
   align-items: center;
   gap: 6px;
+  flex-shrink: 0;
 }
 
 .checkbox-toggle {
   cursor: pointer;
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
   accent-color: var(--accent);
 }
 
@@ -1068,20 +2018,25 @@ body {
   background: none;
   border: none;
   color: var(--text-muted);
-  font-size: 1rem;
+  font-size: 1.05rem;
   cursor: pointer;
-  padding: 4px;
-  border-radius: 4px;
+  min-width: 34px;
+  min-height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
   transition: all 0.15s ease;
 }
 
 .item-delete-btn:hover {
   color: var(--danger);
-  transform: scale(1.15);
+  background: rgba(239, 68, 68, 0.12);
+  transform: scale(1.1);
 }
 
 .panel-hint {
-  font-size: 0.78rem;
+  font-size: 0.8rem;
   color: var(--text-muted);
   text-align: center;
   margin-top: auto;
@@ -1092,12 +2047,14 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
   padding-bottom: 8px;
   border-bottom: 1px solid rgba(56, 189, 248, 0.14);
 }
 
 .history-header h3 {
-  font-size: 1.1rem;
+  font-size: 1.08rem;
   font-weight: 700;
   color: var(--text-primary);
 }
@@ -1121,6 +2078,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 8px;
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(251, 191, 36, 0.28);
   border-radius: var(--radius-sm);
@@ -1143,6 +2101,7 @@ body {
   display: flex;
   align-items: center;
   gap: 10px;
+  min-width: 0;
 }
 
 .history-rank {
@@ -1152,16 +2111,19 @@ body {
   background: rgba(251, 191, 36, 0.15);
   padding: 3px 8px;
   border-radius: var(--radius-full);
+  flex-shrink: 0;
 }
 
 .history-name {
   font-weight: 700;
   font-size: 0.95rem;
+  word-break: break-word;
 }
 
 .history-time {
   font-size: 0.75rem;
   color: var(--text-muted);
+  flex-shrink: 0;
 }
 
 .empty-state {
@@ -1197,10 +2159,9 @@ body {
 
 .modal-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   background: rgba(3, 7, 18, 0.84);
   backdrop-filter: blur(12px);
   display: flex;
@@ -1210,7 +2171,7 @@ body {
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  padding: 1.25rem;
+  padding: 1rem;
 }
 
 .modal-overlay.active {
@@ -1226,12 +2187,12 @@ body {
     0 0 60px rgba(14, 165, 233, 0.28),
     0 0 35px rgba(251, 191, 36, 0.25),
     0 20px 50px rgba(0, 0, 0, 0.85);
-  border-radius: 28px;
-  max-width: 580px;
+  border-radius: 26px;
+  max-width: 560px;
   width: 100%;
   max-height: 94vh;
   overflow-y: auto;
-  padding: 2rem 1.85rem;
+  padding: 1.85rem 1.4rem;
   text-align: center;
   transform: scale(0.7) translateY(40px);
   transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -1243,8 +2204,7 @@ body {
 
 .modal-confetti {
   position: absolute;
-  top: 0;
-  left: 0;
+  inset: 0;
   width: 100%;
   height: 100%;
   pointer-events: none;
@@ -1257,20 +2217,20 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.05rem;
+  gap: 1rem;
 }
 
 .crown-icon-wrapper {
   position: relative;
-  width: 80px;
-  height: 80px;
+  width: 76px;
+  height: 76px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .crown-icon {
-  font-size: 3.6rem;
+  font-size: 3.4rem;
   z-index: 2;
   animation: crown-float 2.5s infinite ease-in-out;
   display: inline-block;
@@ -1283,8 +2243,8 @@ body {
 
 .crown-pulse {
   position: absolute;
-  width: 80px;
-  height: 80px;
+  width: 76px;
+  height: 76px;
   background: radial-gradient(circle, rgba(251, 191, 36, 0.6) 0%, transparent 70%);
   border-radius: 50%;
   animation: crown-pulse-anim 1.8s infinite;
@@ -1297,7 +2257,7 @@ body {
 
 .winner-title {
   font-family: var(--font-fun);
-  font-size: 2.1rem;
+  font-size: 2rem;
   letter-spacing: 1px;
   background: linear-gradient(135deg, #fde047, #fbbf24, #38bdf8);
   -webkit-background-clip: text;
@@ -1307,7 +2267,7 @@ body {
 
 .winner-subtitle {
   color: var(--text-secondary);
-  font-size: 0.98rem;
+  font-size: 0.96rem;
   margin-top: -8px;
 }
 
@@ -1317,9 +2277,9 @@ body {
   background: rgba(14, 165, 233, 0.08);
   border: 2px solid rgba(56, 189, 248, 0.35);
   border-radius: 20px;
-  padding: 1.4rem 1.2rem;
+  padding: 1.25rem 1rem;
   box-shadow: inset 0 0 25px rgba(14, 165, 233, 0.08);
-  margin: 0.3rem 0;
+  margin: 0.25rem 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1340,7 +2300,7 @@ body {
 
 .winner-name {
   font-family: var(--font-fun);
-  font-size: 2.45rem;
+  font-size: 2.3rem;
   font-weight: 700;
   color: #ffffff;
   letter-spacing: 0.5px;
@@ -1350,10 +2310,10 @@ body {
 
 @media (max-width: 500px) {
   .winner-name {
-    font-size: 1.75rem;
+    font-size: 1.7rem;
   }
   .winner-title {
-    font-size: 1.65rem;
+    font-size: 1.55rem;
   }
 }
 
@@ -1371,13 +2331,14 @@ body {
   justify-content: center;
   gap: 8px;
   width: 100%;
+  min-height: 44px;
   margin-top: 4px;
   padding: 10px 14px;
   border-radius: var(--radius-md);
   background: linear-gradient(135deg, rgba(14, 165, 233, 0.16), rgba(16, 185, 129, 0.18));
   border: 1px solid rgba(251, 191, 36, 0.45);
   color: #fde68a;
-  font-size: 0.84rem;
+  font-size: 0.86rem;
   font-weight: 700;
   line-height: 1.35;
   text-decoration: none;
@@ -1394,8 +2355,10 @@ body {
 
 .modal-close-x {
   position: absolute;
-  top: 14px;
-  right: 18px;
+  top: 12px;
+  right: 14px;
+  width: 38px;
+  height: 38px;
   background: none;
   border: none;
   color: var(--text-muted);
@@ -1414,7 +2377,7 @@ body {
   background: #0b1636;
   border: 1px solid rgba(56, 189, 248, 0.3);
   border-radius: var(--radius-lg);
-  padding: 1.8rem;
+  padding: 1.4rem;
   max-width: 500px;
   width: 100%;
   display: flex;
@@ -1424,7 +2387,7 @@ body {
 }
 
 .simple-modal-dialog h3 {
-  font-size: 1.3rem;
+  font-size: 1.25rem;
   color: white;
 }
 
@@ -1440,7 +2403,7 @@ body {
   color: white;
   padding: 12px;
   font-family: var(--font-main);
-  font-size: 0.95rem;
+  font-size: 16px;
   resize: vertical;
   outline: none;
 }
@@ -1452,16 +2415,21 @@ body {
 .modal-buttons {
   display: flex;
   justify-content: flex-end;
+  flex-wrap: wrap;
   gap: 10px;
+}
+
+.modal-buttons .btn {
+  min-height: 44px;
+  padding: 8px 16px;
 }
 
 /* Global Celebration Confetti Canvas */
 .global-confetti {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   pointer-events: none;
   z-index: 999;
 }
@@ -1561,7 +2529,7 @@ body {
         <div class="logo-text">
           <h1>TECDOCENTE PRO • RULETA ESCOLAR</h1>
           <p>Herramienta Gratuita 100% Offline para Participaciones y Dinámicas en Aula</p>
-          <span class="creator-badge">✨ Hecho por Mtro. Jorge Luis Meza Aldana</span>
+          <span class="creator-badge">✨ Desarrollado por TecDocente Pro</span>
         </div>
       </div>
       <div class="header-actions">
@@ -1601,64 +2569,162 @@ body {
       </div>
     </section>
 
+    <!-- Selector Principal de Modo: Ruleta + Creador de Equipos -->
+    <nav class="main-mode-switcher" aria-label="Modo de herramienta didáctica">
+      <button type="button" id="modeRouletteBtn" class="mode-pill-btn active" data-main-mode="roulette">
+        <span class="mode-icon">🎡</span>
+        <span>Ruleta de la Suerte</span>
+      </button>
+      <button type="button" id="modeTeamsBtn" class="mode-pill-btn" data-main-mode="teams">
+        <span class="mode-icon">🤝</span>
+        <span>Creador de Equipos al Azar</span>
+      </button>
+    </nav>
+
     <!-- Main Content Layout -->
     <main class="main-grid">
-      <!-- Left: Wheel Section -->
-      <section class="wheel-section">
-        <div class="wheel-stage">
-          <!-- Outer glowing ring container -->
-          <div class="wheel-wrapper">
-            <!-- Flapper / Needle Indicator at Top -->
-            <div class="wheel-pointer-container">
-              <div class="wheel-pointer" id="wheelPointer">
-                <svg viewBox="0 0 40 50" class="pointer-svg">
-                  <path d="M 20 48 L 5 10 A 15 15 0 0 1 35 10 Z" fill="#f59e0b" stroke="#ffffff" stroke-width="3" filter="drop-shadow(0 4px 6px rgba(0,0,0,0.4))"/>
-                  <circle cx="20" cy="15" r="5" fill="#ffffff" />
-                </svg>
+      <!-- Columna Principal Activa (Ruleta o Creador de Equipos) -->
+      <div class="workspace-main-col">
+        <!-- VISTA 1: RULETA DE LA SUERTE -->
+        <section id="rouletteModeView" class="mode-view wheel-section active">
+          <div class="wheel-stage">
+            <!-- Outer glowing ring container -->
+            <div class="wheel-wrapper">
+              <!-- Flapper / Needle Indicator at Top -->
+              <div class="wheel-pointer-container">
+                <div class="wheel-pointer" id="wheelPointer">
+                  <svg viewBox="0 0 40 50" class="pointer-svg">
+                    <path d="M 20 48 L 5 10 A 15 15 0 0 1 35 10 Z" fill="#f59e0b" stroke="#ffffff" stroke-width="3" filter="drop-shadow(0 4px 6px rgba(0,0,0,0.4))"/>
+                    <circle cx="20" cy="15" r="5" fill="#ffffff" />
+                  </svg>
+                </div>
+              </div>
+
+              <!-- Canvas for Wheel -->
+              <canvas id="wheelCanvas" width="600" height="600"></canvas>
+
+              <!-- Center Spin Button inside wheel -->
+              <button id="centerSpinBtn" class="center-spin-btn" title="¡Haz clic para girar!">
+                <div class="spin-btn-content">
+                  <span class="spin-text">GIRAR</span>
+                  <span class="spin-sub">¡SUERTE!</span>
+                </div>
+              </button>
+            </div>
+          </div>
+
+          <!-- Wheel Controls -->
+          <div class="wheel-controls">
+            <button id="spinBtn" class="btn btn-primary btn-huge btn-pulse">
+              <span class="btn-icon">🚀</span>
+              <span>¡GIRAR RULETA!</span>
+            </button>
+            
+            <div class="quick-options">
+              <button id="shuffleBtn" class="btn btn-secondary btn-sm" title="Revolver nombres en la ruleta">
+                🔀 Mezclar
+              </button>
+              <button id="resetWheelBtn" class="btn btn-secondary btn-sm" title="Restablecer nombres originales">
+                🔄 Restaurar
+              </button>
+              <div class="spin-speed-selector">
+                <label for="spinDurationSelect">⏱️ Duración:</label>
+                <select id="spinDurationSelect" class="form-select-sm">
+                  <option value="4">Rápido (4s)</option>
+                  <option value="6" selected>Normal (6s)</option>
+                  <option value="9">Suspenso (9s)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- VISTA 2: CREADOR DE EQUIPOS AL AZAR -->
+        <section id="teamsModeView" class="mode-view teams-section">
+          <div class="teams-config-card">
+            <div class="teams-config-header">
+              <div class="teams-config-title">
+                <h2>🤝 Creador de Equipos al Azar</h2>
+                <p>Usa automáticamente los alumnos activos de tu lista de nombres</p>
+              </div>
+              <div class="teams-active-pill-group">
+                <span class="teams-active-chip" id="teamsActiveStudentsChip">👥 0 activos</span>
+                <button type="button" id="jumpToNamesBtn" class="teams-jump-list-btn" title="Ir al listado de alumnos">
+                  ✏️ Editar nombres
+                </button>
               </div>
             </div>
 
-            <!-- Canvas for Wheel -->
-            <canvas id="wheelCanvas" width="600" height="600"></canvas>
-
-            <!-- Center Spin Button inside wheel -->
-            <button id="centerSpinBtn" class="center-spin-btn" title="¡Haz clic para girar!">
-              <div class="spin-btn-content">
-                <span class="spin-text">GIRAR</span>
-                <span class="spin-sub">¡SUERTE!</span>
+            <!-- 1. Modalidad de división -->
+            <div class="config-block">
+              <span class="config-label">⚙️ 1. ¿Cómo deseas armar los equipos?</span>
+              <div class="split-mode-toggle">
+                <button type="button" id="splitByMembersBtn" class="split-mode-btn active" data-split-mode="members">
+                  👤 Por integrantes por equipo
+                </button>
+                <button type="button" id="splitByCountBtn" class="split-mode-btn" data-split-mode="count">
+                  🚩 Por cantidad de equipos
+                </button>
               </div>
+            </div>
+
+            <!-- 2. Botones rápidos + input numérico libre -->
+            <div class="config-block">
+              <span class="config-label" id="teamPickerLabel">🔢 2. Integrantes por equipo:</span>
+              <div class="number-picker-wrap">
+                <div class="quick-nums-group" id="quickNumsContainer">
+                  <!-- Botones rápidos renderizados dinámicamente: [2,3,4,5,6] o [2,3,4,5,6,8] -->
+                </div>
+                <div class="custom-num-input-wrap">
+                  <label for="teamCustomCountInput">Otro #:</label>
+                  <input type="number" id="teamCustomCountInput" min="2" max="99" inputmode="numeric" placeholder="Ej. 7">
+                </div>
+              </div>
+            </div>
+
+            <!-- 3. Sobrantes y estilo de nombres -->
+            <div class="team-options-grid">
+              <div class="config-block">
+                <label class="config-label" for="teamLeftoverSelect">🧩 3. Alumnos sobrantes:</label>
+                <select id="teamLeftoverSelect" class="form-select-tech">
+                  <option value="distribute" selected>Repartir sobrantes equitativamente en los equipos</option>
+                  <option value="extra">Formar un equipo extra con los restantes</option>
+                </select>
+              </div>
+              <div class="config-block">
+                <label class="config-label" for="teamNamingSelect">🏷️ 4. Nombres de los equipos:</label>
+                <select id="teamNamingSelect" class="form-select-tech">
+                  <option value="numbered" selected>Numerados (Equipo 1, 2...)</option>
+                  <option value="epic">Nombres Épicos Divertidos (Los Titanes, Halcones...)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Vista previa matemática en vivo -->
+            <div class="team-math-preview" id="teamMathPreview">
+              ⚡ Configura el tamaño de equipo y presiona el botón para comenzar el sorteo.
+            </div>
+
+            <!-- Botón Gigante con pulso -->
+            <button type="button" id="generateTeamsBtn" class="btn btn-primary btn-huge btn-pulse">
+              <span>🎲</span>
+              <span>¡REVOLVER Y CREAR EQUIPOS!</span>
             </button>
           </div>
-        </div>
 
-        <!-- Wheel Controls -->
-        <div class="wheel-controls">
-          <button id="spinBtn" class="btn btn-primary btn-huge btn-pulse">
-            <span class="btn-icon">🚀</span>
-            <span>¡GIRAR RULETA!</span>
-          </button>
-          
-          <div class="quick-options">
-            <button id="shuffleBtn" class="btn btn-secondary btn-sm" title="Revolver nombres en la ruleta">
-              🔀 Mezclar
-            </button>
-            <button id="resetWheelBtn" class="btn btn-secondary btn-sm" title="Restablecer nombres originales">
-              🔄 Restaurar
-            </button>
-            <div class="spin-speed-selector">
-              <label for="spinDurationSelect">⏱️ Duración:</label>
-              <select id="spinDurationSelect" class="form-select-sm">
-                <option value="4">Rápido (4s)</option>
-                <option value="6" selected>Normal (6s)</option>
-                <option value="9">Suspenso (9s)</option>
-              </select>
+          <!-- Contenedor dinámico: Vórtice de Sorteo (2.2s) + Tarjetas Escalonadas -->
+          <div id="teamsArena" class="teams-arena">
+            <div class="teams-initial-placeholder">
+              <span class="placeholder-emoji">🎲</span>
+              <h3>¡Todo listo para el sorteo de equipos!</h3>
+              <p>Elige cuántos integrantes o equipos necesitas arriba y presiona <strong>¡REVOLVER Y CREAR EQUIPOS!</strong> para iniciar la mezcla en vivo.</p>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
 
-      <!-- Right: Participants & History Panel -->
-      <aside class="sidebar-section">
+      <!-- Right / Bottom: Shared Participants & History Panel -->
+      <aside class="sidebar-section" id="sharedSidebarSection">
         <!-- Navigation Tabs -->
         <div class="tabs-nav">
           <button class="tab-btn active" data-tab="participantsTab">
@@ -1741,7 +2807,7 @@ body {
 
     <!-- Footer Credits -->
     <footer class="main-footer">
-      <p>TECDOCENTE PRO • Ruleta Escolar Offline • Hecho por <strong>Mtro. Jorge Luis Meza Aldana</strong> 🌟</p>
+      <p>Ruleta y Creador de Equipos • Desarrollado por <strong>TecDocente Pro</strong> 🌟</p>
     </footer>
   </div>
 
@@ -1811,9 +2877,9 @@ const URL_DEMO_SECUNDARIA = "https://tecdocentepro-lab.github.io/tecdocente-demo
 
 /**
  * ==========================================================
- * TECDOCENTE PRO • RULETA ESCOLAR INTERACTIVA
+ * TECDOCENTE PRO • RULETA ESCOLAR Y CREADOR DE EQUIPOS
  * Con Auto-Descarga Offline, Sonidos Sintetizados (Web Audio API),
- * Confeti, Animaciones Físicas y Registro de Ganadores.
+ * Vórtice de Sorteo, Confeti, Animaciones Físicas y Persistencia.
  * ==========================================================
  */
 
@@ -1851,6 +2917,26 @@ async function descargarRuletaOffline() {
       overlay.classList.remove('active');
     });
 
+    // Restablecer vista predeterminada (Ruleta activa y arena de equipos limpia)
+    const modeRouletteClone = clone.querySelector('#modeRouletteBtn');
+    const modeTeamsClone = clone.querySelector('#modeTeamsBtn');
+    const rouletteViewClone = clone.querySelector('#rouletteModeView');
+    const teamsViewClone = clone.querySelector('#teamsModeView');
+    if (modeRouletteClone) modeRouletteClone.classList.add('active');
+    if (modeTeamsClone) modeTeamsClone.classList.remove('active');
+    if (rouletteViewClone) rouletteViewClone.classList.add('active');
+    if (teamsViewClone) teamsViewClone.classList.remove('active');
+
+    const teamsArenaClone = clone.querySelector('#teamsArena');
+    if (teamsArenaClone) {
+      teamsArenaClone.innerHTML = `
+            <div class="teams-initial-placeholder">
+              <span class="placeholder-emoji">🎲</span>
+              <h3>¡Todo listo para el sorteo de equipos!</h3>
+              <p>Elige cuántos integrantes o equipos necesitas arriba y presiona <strong>¡REVOLVER Y CREAR EQUIPOS!</strong> para iniciar la mezcla en vivo.</p>
+            </div>`;
+    }
+
     const activeCountClone = clone.querySelector('#activeCountBadge');
     if (activeCountClone) activeCountClone.textContent = '0';
 
@@ -1859,6 +2945,9 @@ async function descargarRuletaOffline() {
 
     const listInfoClone = clone.querySelector('#listInfoText');
     if (listInfoClone) listInfoClone.textContent = '0 en ruleta';
+
+    const teamsChipClone = clone.querySelector('#teamsActiveStudentsChip');
+    if (teamsChipClone) teamsChipClone.textContent = '👥 0 activos';
 
     const downloadBtnClone = clone.querySelector('#downloadOfflineBtn');
     if (downloadBtnClone) {
@@ -1912,7 +3001,7 @@ function sincronizarEnlacesOficiales() {
   });
 }
 
-// --- PALETA DE COLORES VIBRANTES ---
+// --- PALETA DE COLORES VIBRANTES Y TEMAS DE EQUIPOS ---
 const COLOR_PALETTE = [
   '#FF2A6D', '#05D9E8', '#FFBC00', '#00F0FF', 
   '#9D00FF', '#00E676', '#FF5722', '#3D5AFE',
@@ -1921,16 +3010,104 @@ const COLOR_PALETTE = [
 ];
 
 const DEFAULT_NAMES = [
-  'Carlos', 'Sofía', 'Alejandro', 'Valentina', 
-  'Mateo', 'Camila', 'Santiago', 'Lucía'
+  'Leonardo', 'Renata', 'Emiliano', 'Ximena',
+  'Sebastián', 'Regina', 'Diego', 'Natalia',
+  'Daniel', 'Valeria', 'Gael', 'Victoria'
 ];
 
-// --- SISTEMA DE EFECTOS DE SONIDO (WEB AUDIO API) ---
+const EPIC_TEAM_NAMES = [
+  'Los Titanes',
+  'Halcones Cósmicos',
+  'Mentes Brillantes',
+  'Rayos Alfa',
+  'Guardianes Estelares',
+  'Fénix Dorado',
+  'Dragones Cyber',
+  'Exploradores Galácticos',
+  'Centellas Azules',
+  'Lobos Árticos',
+  'Águilas Imperiales',
+  'Guerreros del Saber',
+  'Cometas Veloces',
+  'Tigres Relámpago',
+  'Navegantes Astrales',
+  'Panteras Neón',
+  'Astros Invencibles',
+  'Escuadrón Orión',
+  'Pioneros Quantum',
+  'Leones de Acero',
+  'Relámpagos Esmeralda',
+  'Cazadores de Estrellas',
+  'Samuráis Digitales',
+  'Valkirias Solares'
+];
+
+const TEAM_CARD_THEMES = [
+  {
+    grad: 'linear-gradient(135deg, #0284c7 0%, #06b6d4 100%)',
+    border: 'rgba(56, 189, 248, 0.5)',
+    glow: 'rgba(14, 165, 233, 0.35)',
+    badgeBg: 'rgba(14, 165, 233, 0.25)',
+    shield: '🛡️'
+  },
+  {
+    grad: 'linear-gradient(135deg, #059669 0%, #10b981 100%)',
+    border: 'rgba(52, 211, 153, 0.5)',
+    glow: 'rgba(16, 185, 129, 0.35)',
+    badgeBg: 'rgba(16, 185, 129, 0.25)',
+    shield: '⚡'
+  },
+  {
+    grad: 'linear-gradient(135deg, #d97706 0%, #f59e0b 100%)',
+    border: 'rgba(251, 191, 36, 0.52)',
+    glow: 'rgba(245, 158, 11, 0.35)',
+    badgeBg: 'rgba(245, 158, 11, 0.25)',
+    shield: '🦅'
+  },
+  {
+    grad: 'linear-gradient(135deg, #7c3aed 0%, #a855f7 100%)',
+    border: 'rgba(192, 132, 252, 0.5)',
+    glow: 'rgba(168, 85, 247, 0.35)',
+    badgeBg: 'rgba(168, 85, 247, 0.25)',
+    shield: '🚀'
+  },
+  {
+    grad: 'linear-gradient(135deg, #e11d48 0%, #fb7185 100%)',
+    border: 'rgba(251, 113, 133, 0.5)',
+    glow: 'rgba(244, 63, 94, 0.35)',
+    badgeBg: 'rgba(244, 63, 94, 0.25)',
+    shield: '🔥'
+  },
+  {
+    grad: 'linear-gradient(135deg, #2563eb 0%, #4f46e5 100%)',
+    border: 'rgba(129, 140, 248, 0.5)',
+    glow: 'rgba(99, 102, 241, 0.35)',
+    badgeBg: 'rgba(99, 102, 241, 0.25)',
+    shield: '🌟'
+  },
+  {
+    grad: 'linear-gradient(135deg, #0d9488 0%, #06b6d4 100%)',
+    border: 'rgba(45, 212, 191, 0.5)',
+    glow: 'rgba(20, 184, 166, 0.35)',
+    badgeBg: 'rgba(20, 184, 166, 0.25)',
+    shield: '💎'
+  },
+  {
+    grad: 'linear-gradient(135deg, #ea580c 0%, #f97316 100%)',
+    border: 'rgba(251, 146, 60, 0.5)',
+    glow: 'rgba(249, 115, 22, 0.35)',
+    badgeBg: 'rgba(249, 115, 22, 0.25)',
+    shield: '🐉'
+  }
+];
+
+// --- SISTEMA DE EFECTOS DE SONIDO SINTETIZADOS (WEB AUDIO API) ---
 class SoundSystem {
   constructor() {
     this.ctx = null;
     this.enabled = true;
     this.lastTickTime = 0;
+    this.lastShuffleTime = 0;
   }
 
   init() {
@@ -1950,21 +3127,68 @@ class SoundSystem {
     return this.enabled;
   }
 
-  // Ticking / Clack mecánico de la aguja con la clavija
+  // Sonido suave de clic táctil para botones, pestañas y selectores
+  playClick() {
+    if (!this.enabled) return;
+    this.init();
+    if (!this.ctx) return;
+
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(760, now);
+    osc.frequency.exponentialRampToValueAtTime(340, now + 0.028);
+
+    gain.gain.setValueAtTime(0.11, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.028);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.03);
+  }
+
+  // Burbuja / Pop alegre al agregar alumnos, copiar listas o iniciar acción
+  playPop() {
+    if (!this.enabled) return;
+    this.init();
+    if (!this.ctx) return;
+
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(360, now);
+    osc.frequency.exponentialRampToValueAtTime(780, now + 0.055);
+
+    gain.gain.setValueAtTime(0.01, now);
+    gain.gain.linearRampToValueAtTime(0.15, now + 0.012);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.065);
+  }
+
+  // Ticking / Clack mecánico de la aguja con la clavija en la ruleta
   playTick() {
     if (!this.enabled) return;
     this.init();
     if (!this.ctx) return;
 
     const now = this.ctx.currentTime;
-    // Prevenir saturación de audio a altísimas velocidades
     if (now - this.lastTickTime < 0.025) return;
     this.lastTickTime = now;
 
     const osc = this.ctx.createOscillator();
     const gain = this.ctx.createGain();
 
-    // Rango de frecuencia para sonido de chasquido de plástico/madera
     const freq = 650 + (Math.random() * 220);
     osc.type = 'triangle';
     osc.frequency.setValueAtTime(freq, now);
@@ -1980,14 +3204,87 @@ class SoundSystem {
     osc.stop(now + 0.035);
   }
 
-  // Fanfarria triunfal al salir un ganador
+  // Sonido rápido de barajado/ruleta digital durante los 2.2s del Vórtice de Sorteo
+  playShuffleTick() {
+    if (!this.enabled) return;
+    this.init();
+    if (!this.ctx) return;
+
+    const now = this.ctx.currentTime;
+    if (now - this.lastShuffleTime < 0.035) return;
+    this.lastShuffleTime = now;
+
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    const baseFreq = 480 + (Math.random() * 460);
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(baseFreq, now);
+    osc.frequency.exponentialRampToValueAtTime(220, now + 0.036);
+
+    gain.gain.setValueAtTime(0.13, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.038);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.04);
+  }
+
+  // Nota musical ascendente (escala pentatónica mayor alegre) al revelar cada tarjeta de equipo
+  playTeamReveal(teamIndex = 0) {
+    if (!this.enabled) return;
+    this.init();
+    if (!this.ctx) return;
+
+    const now = this.ctx.currentTime;
+    // Escala pentatónica mayor ascendente: C5, D5, E5, G5, A5, C6, D6, E6, G6, A6
+    const pentatonicScale = [
+      523.25, 587.33, 659.25, 783.99, 880.00,
+      1046.50, 1174.66, 1318.51, 1567.98, 1760.00
+    ];
+    const freq = pentatonicScale[teamIndex % pentatonicScale.length];
+
+    const oscMain = this.ctx.createOscillator();
+    const oscHarm = this.ctx.createOscillator();
+    const gainMain = this.ctx.createGain();
+    const gainHarm = this.ctx.createGain();
+
+    oscMain.type = 'sine';
+    oscMain.frequency.setValueAtTime(freq * 0.98, now);
+    oscMain.frequency.exponentialRampToValueAtTime(freq, now + 0.03);
+
+    oscHarm.type = 'triangle';
+    oscHarm.frequency.setValueAtTime(freq * 1.5, now);
+
+    gainMain.gain.setValueAtTime(0.001, now);
+    gainMain.gain.linearRampToValueAtTime(0.19, now + 0.018);
+    gainMain.gain.exponentialRampToValueAtTime(0.0008, now + 0.34);
+
+    gainHarm.gain.setValueAtTime(0.001, now);
+    gainHarm.gain.linearRampToValueAtTime(0.06, now + 0.015);
+    gainHarm.gain.exponentialRampToValueAtTime(0.0008, now + 0.22);
+
+    oscMain.connect(gainMain);
+    oscHarm.connect(gainHarm);
+    gainMain.connect(this.ctx.destination);
+    gainHarm.connect(this.ctx.destination);
+
+    oscMain.start(now);
+    oscHarm.start(now);
+    oscMain.stop(now + 0.36);
+    oscHarm.stop(now + 0.24);
+  }
+
+  // Fanfarria triunfal al salir un ganador o al completarse todos los equipos
   playVictory() {
     if (!this.enabled) return;
     this.init();
     if (!this.ctx) return;
 
     const now = this.ctx.currentTime;
-    // Acordes alegres (Do Mayor arpegiado brillante: C5, E5, G5, B5, C6)
+    // Acordes alegres (Do Mayor arpegiado brillante: C5, E5, G5, B5, C6, E6)
     const notes = [523.25, 659.25, 783.99, 987.77, 1046.50, 1318.51];
     
     notes.forEach((freq, idx) => {
@@ -2011,7 +3308,7 @@ class SoundSystem {
 
     // Toque extra de campanilla brillante al final
     setTimeout(() => {
-      if (!this.ctx) return;
+      if (!this.ctx || !this.enabled) return;
       const t = this.ctx.currentTime;
       const osc = this.ctx.createOscillator();
       const gain = this.ctx.createGain();
@@ -2116,16 +3413,26 @@ class ConfettiEngine {
   }
 }
 
-// --- CLASE PRINCIPAL DE LA APLICACIÓN RULETA ---
+// --- CLASE PRINCIPAL DE LA APLICACIÓN (RULETA + EQUIPOS) ---
 class RouletteApp {
   constructor() {
-    // Estado de participantes
+    // Estado de participantes y ruleta
     this.items = [];
     this.history = [];
     this.isSpinning = false;
     this.currentAngle = 0;
     this.lastWinner = null;
     this.lastPegIndex = -1;
+    this.displaySize = 540;
+
+    // Estado de navegación principal y Creador de Equipos
+    this.currentMainMode = 'roulette'; // 'roulette' | 'teams'
+    this.teamSplitMode = 'members';    // 'members' | 'count'
+    this.teamTargetValue = 3;          // Valor seleccionado por defecto
+    this.isGeneratingTeams = false;
+    this.generatedTeams = [];
+    this.teamTimers = [];
+    this.shuffleIntervalId = null;
 
     // Servicios
     this.sounds = new SoundSystem();
@@ -2133,6 +3440,7 @@ class RouletteApp {
     this.initCanvas();
     this.initConfetti();
     this.loadState();
+    this.renderQuickNumButtons();
     this.bindEvents();
     this.renderNamesList();
     this.renderHistory();
@@ -2140,6 +3448,13 @@ class RouletteApp {
   }
 
   initDOM() {
+    // Selector Principal de Modo
+    this.modeRouletteBtn = document.getElementById('modeRouletteBtn');
+    this.modeTeamsBtn = document.getElementById('modeTeamsBtn');
+    this.rouletteModeView = document.getElementById('rouletteModeView');
+    this.teamsModeView = document.getElementById('teamsModeView');
+
+    // Ruleta
     this.canvas = document.getElementById('wheelCanvas');
     this.pointer = document.getElementById('wheelPointer');
     this.spinBtn = document.getElementById('spinBtn');
@@ -2147,6 +3462,20 @@ class RouletteApp {
     this.shuffleBtn = document.getElementById('shuffleBtn');
     this.resetWheelBtn = document.getElementById('resetWheelBtn');
     this.spinDurationSelect = document.getElementById('spinDurationSelect');
+
+    // Creador de Equipos
+    this.teamsActiveStudentsChip = document.getElementById('teamsActiveStudentsChip');
+    this.jumpToNamesBtn = document.getElementById('jumpToNamesBtn');
+    this.splitByMembersBtn = document.getElementById('splitByMembersBtn');
+    this.splitByCountBtn = document.getElementById('splitByCountBtn');
+    this.teamPickerLabel = document.getElementById('teamPickerLabel');
+    this.quickNumsContainer = document.getElementById('quickNumsContainer');
+    this.teamCustomCountInput = document.getElementById('teamCustomCountInput');
+    this.teamLeftoverSelect = document.getElementById('teamLeftoverSelect');
+    this.teamNamingSelect = document.getElementById('teamNamingSelect');
+    this.teamMathPreview = document.getElementById('teamMathPreview');
+    this.generateTeamsBtn = document.getElementById('generateTeamsBtn');
+    this.teamsArena = document.getElementById('teamsArena');
     
     // Header
     this.soundToggleBtn = document.getElementById('soundToggleBtn');
@@ -2154,7 +3483,8 @@ class RouletteApp {
     this.soundLabel = document.getElementById('soundLabel');
     this.fullscreenBtn = document.getElementById('fullscreenBtn');
 
-    // Sidebar
+    // Sidebar compartido
+    this.sharedSidebarSection = document.getElementById('sharedSidebarSection');
     this.tabBtns = document.querySelectorAll('.tab-btn');
     this.tabContents = document.querySelectorAll('.tab-content');
     this.addNameForm = document.getElementById('addNameForm');
@@ -2188,8 +3518,10 @@ class RouletteApp {
     this.ctx = this.canvas.getContext('2d');
     this.fixCanvasDpi();
     window.addEventListener('resize', () => {
-      this.fixCanvasDpi();
-      this.drawWheel();
+      if (this.currentMainMode === 'roulette') {
+        this.fixCanvasDpi();
+        this.drawWheel();
+      }
     });
 
     // Desbloquear audio en la primera interacción táctil o clic
@@ -2205,12 +3537,13 @@ class RouletteApp {
   fixCanvasDpi() {
     const dpr = window.devicePixelRatio || 1;
     const rect = this.canvas.getBoundingClientRect();
-    const size = Math.round(rect.width) || 540;
+    const measured = Math.round(rect.width);
+    if (!measured) return;
 
-    this.canvas.width = Math.round(size * dpr);
-    this.canvas.height = Math.round(size * dpr);
+    this.canvas.width = Math.round(measured * dpr);
+    this.canvas.height = Math.round(measured * dpr);
     this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    this.displaySize = size;
+    this.displaySize = measured;
   }
 
   initConfetti() {
@@ -2221,7 +3554,7 @@ class RouletteApp {
   // --- PERSISTENCIA LOCALSTORAGE ---
   loadState() {
     try {
-      const savedItems = localStorage.getItem('roulette_items');
+      const savedItems = localStorage.getItem('tecdocente_ruleta_v2_items');
       if (savedItems) {
         this.items = JSON.parse(savedItems);
       } else {
@@ -2246,7 +3579,7 @@ class RouletteApp {
 
   saveState() {
     try {
-      localStorage.setItem('roulette_items', JSON.stringify(this.items));
+      localStorage.setItem('tecdocente_ruleta_v2_items', JSON.stringify(this.items));
       localStorage.setItem('roulette_history', JSON.stringify(this.history));
       localStorage.setItem('roulette_sound_enabled', this.sounds.enabled.toString());
     } catch (e) {
@@ -2263,20 +3596,521 @@ class RouletteApp {
     }));
   }
 
+  // --- NAVEGACIÓN PRINCIPAL DE MODO (RULETA / EQUIPOS) ---
+  switchMainMode(mode) {
+    if (mode === this.currentMainMode) return;
+    this.currentMainMode = mode;
+    this.sounds.playClick();
+
+    const isRoulette = mode === 'roulette';
+    this.modeRouletteBtn.classList.toggle('active', isRoulette);
+    this.modeTeamsBtn.classList.toggle('active', !isRoulette);
+    this.rouletteModeView.classList.toggle('active', isRoulette);
+    this.teamsModeView.classList.toggle('active', !isRoulette);
+
+    if (isRoulette) {
+      requestAnimationFrame(() => {
+        this.fixCanvasDpi();
+        this.drawWheel();
+      });
+    } else {
+      this.updateTeamPreviewSummary();
+    }
+  }
+
+  // --- CONFIGURACIÓN Y CÁLCULO DEL CREADOR DE EQUIPOS ---
+  setTeamSplitMode(splitMode) {
+    if (this.teamSplitMode === splitMode) return;
+    this.teamSplitMode = splitMode;
+    this.sounds.playClick();
+
+    const byMembers = splitMode === 'members';
+    this.splitByMembersBtn.classList.toggle('active', byMembers);
+    this.splitByCountBtn.classList.toggle('active', !byMembers);
+    this.teamPickerLabel.textContent = byMembers
+      ? '🔢 2. Integrantes por equipo:'
+      : '🚩 2. Cantidad total de equipos:';
+    this.teamCustomCountInput.placeholder = byMembers ? 'Ej. 7' : 'Ej. 10';
+    this.teamCustomCountInput.value = '';
+
+    // Ajustar valor rápido válido si cambió de modalidad
+    const presets = byMembers ? [2, 3, 4, 5, 6] : [2, 3, 4, 5, 6, 8];
+    if (!presets.includes(this.teamTargetValue)) {
+      this.teamTargetValue = presets[1]; // 3 por defecto
+    }
+
+    this.renderQuickNumButtons();
+    this.updateTeamPreviewSummary();
+  }
+
+  renderQuickNumButtons() {
+    const presets = this.teamSplitMode === 'members'
+      ? [2, 3, 4, 5, 6]
+      : [2, 3, 4, 5, 6, 8];
+
+    const customActive = this.teamCustomCountInput.value.trim() !== '';
+    this.quickNumsContainer.innerHTML = '';
+
+    presets.forEach(num => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = `quick-num-btn ${!customActive && this.teamTargetValue === num ? 'active' : ''}`;
+      btn.textContent = num;
+      btn.title = this.teamSplitMode === 'members'
+        ? `Equipos de ${num} integrantes`
+        : `Dividir en ${num} equipos`;
+
+      btn.addEventListener('click', () => {
+        this.teamTargetValue = num;
+        this.teamCustomCountInput.value = '';
+        this.sounds.playClick();
+        this.renderQuickNumButtons();
+        this.updateTeamPreviewSummary();
+      });
+
+      this.quickNumsContainer.appendChild(btn);
+    });
+  }
+
+  // Distribuye una lista de alumnos según la configuración elegida
+  computeTeamsDistribution(studentsList) {
+    const total = studentsList.length;
+    if (total === 0) return [];
+
+    const rawVal = parseInt(this.teamTargetValue, 10);
+    const targetVal = Math.max(2, Math.min(99, isNaN(rawVal) ? 2 : rawVal));
+    const leftoverMode = this.teamLeftoverSelect.value; // 'distribute' | 'extra'
+    const buckets = [];
+
+    if (this.teamSplitMode === 'members') {
+      const memberSize = targetVal;
+      if (total <= memberSize) {
+        return [studentsList.slice()];
+      }
+
+      const baseTeamsCount = Math.floor(total / memberSize);
+      const remainder = total % memberSize;
+
+      if (remainder === 0) {
+        for (let i = 0; i < baseTeamsCount; i++) {
+          buckets.push(studentsList.slice(i * memberSize, (i + 1) * memberSize));
+        }
+      } else if (leftoverMode === 'extra') {
+        // Opción B: Formar un equipo extra con los restantes
+        for (let i = 0; i < baseTeamsCount; i++) {
+          buckets.push(studentsList.slice(i * memberSize, (i + 1) * memberSize));
+        }
+        buckets.push(studentsList.slice(baseTeamsCount * memberSize));
+      } else {
+        // Opción A: Repartir sobrantes equitativamente en los equipos base
+        for (let i = 0; i < baseTeamsCount; i++) {
+          buckets.push([]);
+        }
+        studentsList.forEach((student, idx) => {
+          buckets[idx % baseTeamsCount].push(student);
+        });
+      }
+    } else {
+      // Modalidad: Por cantidad exacta de equipos
+      const desiredTeams = Math.min(targetVal, total);
+      const baseSize = Math.floor(total / desiredTeams);
+      const remainder = total % desiredTeams;
+
+      if (remainder === 0) {
+        for (let i = 0; i < desiredTeams; i++) {
+          buckets.push(studentsList.slice(i * baseSize, (i + 1) * baseSize));
+        }
+      } else if (leftoverMode === 'extra' && baseSize >= 1) {
+        // Opción B: desiredTeams equipos iguales + 1 equipo extra con los sobrantes
+        for (let i = 0; i < desiredTeams; i++) {
+          buckets.push(studentsList.slice(i * baseSize, (i + 1) * baseSize));
+        }
+        buckets.push(studentsList.slice(desiredTeams * baseSize));
+      } else {
+        // Opción A: Repartir sobrantes equitativamente entre los desiredTeams equipos
+        let cursor = 0;
+        for (let i = 0; i < desiredTeams; i++) {
+          const currentSize = baseSize + (i < remainder ? 1 : 0);
+          buckets.push(studentsList.slice(cursor, cursor + currentSize));
+          cursor += currentSize;
+        }
+      }
+    }
+
+    return buckets.filter(b => b.length > 0);
+  }
+
+  updateTeamPreviewSummary() {
+    const activeItems = this.getActiveItems();
+    const total = activeItems.length;
+
+    if (this.teamsActiveStudentsChip) {
+      this.teamsActiveStudentsChip.textContent = `👥 ${total} ${total === 1 ? 'activo' : 'activos'}`;
+    }
+
+    if (!this.teamMathPreview) return;
+
+    if (total < 2) {
+      this.teamMathPreview.innerHTML = '⚠️ Necesitas al menos <strong>2 alumnos activos</strong> en la lista de nombres para crear equipos.';
+      return;
+    }
+
+    const previewBuckets = this.computeTeamsDistribution(activeItems);
+    const sizes = previewBuckets.map(b => b.length);
+    const minSize = Math.min(...sizes);
+    const maxSize = Math.max(...sizes);
+
+    let detailText = '';
+    if (minSize === maxSize) {
+      detailText = `todos de <strong>${minSize} ${minSize === 1 ? 'integrante' : 'integrantes'}</strong>`;
+    } else {
+      detailText = `de entre <strong>${minSize} y ${maxSize} integrantes</strong>`;
+    }
+
+    this.teamMathPreview.innerHTML = `📊 Con <strong>${total} alumnos activos</strong> se formarán <strong>${previewBuckets.length} ${previewBuckets.length === 1 ? 'equipo' : 'equipos'}</strong> (${detailText}).`;
+  }
+
+  clearTeamTimers() {
+    if (this.shuffleIntervalId) {
+      clearInterval(this.shuffleIntervalId);
+      this.shuffleIntervalId = null;
+    }
+    if (this.teamTimers && this.teamTimers.length > 0) {
+      this.teamTimers.forEach(id => clearTimeout(id));
+      this.teamTimers = [];
+    }
+  }
+
+  // --- SORTEO EN VIVO (VÓRTICE 2.2s + REVELACIÓN ESCALONADA 180ms) ---
+  generateTeamsWithAnimation() {
+    if (this.isGeneratingTeams) return;
+
+    const activeItems = this.getActiveItems();
+    if (activeItems.length < 2) {
+      this.sounds.playClick();
+      alert('¡Necesitas tener al menos 2 alumnos activos en la lista para armar equipos!');
+      this.focusNamesPanel();
+      return;
+    }
+
+    this.clearTeamTimers();
+    this.isGeneratingTeams = true;
+    this.generateTeamsBtn.disabled = true;
+    this.sounds.playPop();
+
+    // Preparar chips flotantes iniciales para el Vórtice de Sorteo (2.2s)
+    const chipCount = Math.min(8, Math.max(4, activeItems.length));
+    const initialChipsHtml = Array.from({ length: chipCount }, (_, idx) => {
+      const sample = activeItems[idx % activeItems.length];
+      return `<span class="vortex-floating-chip">${this.escapeHtml(sample.name)}</span>`;
+    }).join('');
+
+    this.teamsArena.innerHTML = `
+      <div class="vortex-stage" role="status" aria-live="polite">
+        <div class="vortex-orbital-ring"></div>
+        <div class="vortex-orbital-ring ring-2"></div>
+        <div class="vortex-cards-cloud" id="vortexCardsCloud">
+          ${initialChipsHtml}
+        </div>
+        <div class="vortex-status-box">
+          <p class="vortex-status-text" id="vortexStatusText">🔀 Mezclando integrantes al azar... 0%</p>
+          <div class="vortex-progress-track">
+            <div class="vortex-progress-fill" id="vortexProgressFill"></div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    // Asegurar visibilidad cómoda del vórtice en pantallas móviles
+    this.teamsArena.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+    const chipEls = this.teamsArena.querySelectorAll('.vortex-floating-chip');
+    const progressFill = document.getElementById('vortexProgressFill');
+    const statusText = document.getElementById('vortexStatusText');
+
+    const VORTEX_DURATION_MS = 2200;
+    const startTime = performance.now();
+
+    this.shuffleIntervalId = setInterval(() => {
+      const elapsed = performance.now() - startTime;
+      const pct = Math.min(100, Math.round((elapsed / VORTEX_DURATION_MS) * 100));
+
+      if (progressFill) progressFill.style.width = `${pct}%`;
+      if (statusText) statusText.textContent = `🔀 Mezclando integrantes al azar... ${pct}%`;
+
+      chipEls.forEach(chip => {
+        const randomStudent = activeItems[Math.floor(Math.random() * activeItems.length)];
+        chip.textContent = randomStudent.name;
+      });
+
+      this.sounds.playShuffleTick();
+    }, 85);
+
+    const finishVortexTimer = setTimeout(() => {
+      if (this.shuffleIntervalId) {
+        clearInterval(this.shuffleIntervalId);
+        this.shuffleIntervalId = null;
+      }
+      this.revealShuffledTeams(activeItems);
+    }, VORTEX_DURATION_MS);
+
+    this.teamTimers.push(finishVortexTimer);
+  }
+
+  revealShuffledTeams(activeItems) {
+    // Barajado imparcial Fisher-Yates sobre copia de alumnos activos
+    const shuffled = activeItems.map(item => ({ ...item }));
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+
+    const buckets = this.computeTeamsDistribution(shuffled);
+    const namingMode = this.teamNamingSelect.value; // 'numbered' | 'epic'
+
+    // Barajar nombres épicos para no repetir orden
+    const shuffledEpic = [...EPIC_TEAM_NAMES];
+    for (let i = shuffledEpic.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffledEpic[i], shuffledEpic[j]] = [shuffledEpic[j], shuffledEpic[i]];
+    }
+
+    this.generatedTeams = buckets.map((members, idx) => {
+      const teamNum = idx + 1;
+      const theme = TEAM_CARD_THEMES[idx % TEAM_CARD_THEMES.length];
+      let title = `Equipo ${teamNum}`;
+      let subtitle = 'Sorteo Oficial';
+
+      if (namingMode === 'epic') {
+        const baseEpic = shuffledEpic[idx % shuffledEpic.length];
+        const cycle = Math.floor(idx / shuffledEpic.length);
+        title = cycle > 0 ? `${baseEpic} ${cycle + 1}` : baseEpic;
+        subtitle = `Equipo #${teamNum}`;
+      }
+
+      return {
+        number: teamNum,
+        title,
+        subtitle,
+        namingMode,
+        theme,
+        members
+      };
+    });
+
+    // Construir HTML de barra de herramientas post-sorteo + tarjetas ocultas listas para pop-in
+    const cardsHtml = this.generatedTeams.map(team => {
+      const countLabel = `${team.members.length} ${team.members.length === 1 ? 'integrante' : 'integrantes'}`;
+      const membersHtml = team.members.map((m, mIdx) => `
+        <li class="team-member-item">
+          <span class="member-num-badge">${mIdx + 1}</span>
+          <span class="member-name-label">${this.escapeHtml(m.name)}</span>
+        </li>
+      `).join('');
+
+      return `
+        <article class="team-card" style="--team-grad: ${team.theme.grad}; --team-border: ${team.theme.border}; --team-glow: ${team.theme.glow}; --team-badge-bg: ${team.theme.badgeBg};">
+          <header class="team-card-header">
+            <div class="team-card-title-group">
+              <span class="team-shield-icon" aria-hidden="true">${team.theme.shield}</span>
+              <div class="team-card-heading">
+                <h4>${this.escapeHtml(team.title)}</h4>
+                <small>${this.escapeHtml(team.subtitle)}</small>
+              </div>
+            </div>
+            <span class="team-count-pill">${countLabel}</span>
+          </header>
+          <ol class="team-members-list">
+            ${membersHtml}
+          </ol>
+        </article>
+      `;
+    }).join('');
+
+    const totalTeams = this.generatedTeams.length;
+    this.teamsArena.innerHTML = `
+      <div class="teams-post-toolbar">
+        <div class="teams-post-summary">
+          <span>🎉</span>
+          <span>¡${totalTeams} ${totalTeams === 1 ? 'equipo formado' : 'equipos formados'} con ${activeItems.length} alumnos!</span>
+        </div>
+        <div class="teams-post-actions">
+          <button type="button" id="copyTeamsBtn" class="btn btn-accent">
+            📋 Copiar Equipos (WhatsApp / Word)
+          </button>
+          <button type="button" id="reshuffleTeamsBtn" class="btn btn-primary">
+            🔀 Volver a Revolver
+          </button>
+        </div>
+      </div>
+      <div class="teams-cards-grid" id="teamsCardsGrid">
+        ${cardsHtml}
+      </div>
+    `;
+
+    // Vincular botones post-sorteo
+    const copyTeamsBtn = document.getElementById('copyTeamsBtn');
+    const reshuffleTeamsBtn = document.getElementById('reshuffleTeamsBtn');
+    if (copyTeamsBtn) {
+      copyTeamsBtn.addEventListener('click', () => this.copyTeamsToClipboard(copyTeamsBtn));
+    }
+    if (reshuffleTeamsBtn) {
+      reshuffleTeamsBtn.addEventListener('click', () => this.generateTeamsWithAnimation());
+    }
+
+    // Revelación escalonada cada 180ms con efecto elástico y escala pentatónica
+    const cardNodes = this.teamsArena.querySelectorAll('.team-card');
+    cardNodes.forEach((cardEl, idx) => {
+      const revealTimer = setTimeout(() => {
+        cardEl.classList.add('revealed');
+        this.sounds.playTeamReveal(idx);
+
+        // Al revelarse el último equipo: confeti + fanfarria triunfal
+        if (idx === cardNodes.length - 1) {
+          this.isGeneratingTeams = false;
+          this.generateTeamsBtn.disabled = false;
+          this.globalConfetti.explode(170);
+
+          const fanfareTimer = setTimeout(() => {
+            this.sounds.playVictory();
+          }, 150);
+          this.teamTimers.push(fanfareTimer);
+        }
+      }, 50 + (idx * 180));
+
+      this.teamTimers.push(revealTimer);
+    });
+  }
+
+  copyTeamsToClipboard(btnEl) {
+    if (!this.generatedTeams || this.generatedTeams.length === 0) return;
+
+    const totalMembers = this.generatedTeams.reduce((acc, t) => acc + t.members.length, 0);
+    const headerLine = `🤝 EQUIPOS DE TRABAJO • TECDOCENTE PRO\n👥 Total: ${totalMembers} integrantes en ${this.generatedTeams.length} equipos\n`;
+
+    const blocks = this.generatedTeams.map(team => {
+      const heading = team.namingMode === 'epic'
+        ? `🏆 EQUIPO ${team.number} (${team.title}):`
+        : `🏆 EQUIPO ${team.number}:`;
+      const list = team.members.map((m, i) => `   ${i + 1}. ${m.name}`).join('\n');
+      return `${heading}\n${list}`;
+    });
+
+    const formattedText = `${headerLine}\n${blocks.join('\n\n')}`;
+
+    this.copyTextWithFallback(formattedText).then(copied => {
+      if (copied) {
+        this.sounds.playPop();
+        if (btnEl && !btnEl.dataset.copied) {
+          const originalHtml = btnEl.innerHTML;
+          btnEl.dataset.copied = '1';
+          btnEl.innerHTML = '✅ ¡Equipos copiados al portapapeles!';
+          setTimeout(() => {
+            btnEl.innerHTML = originalHtml;
+            delete btnEl.dataset.copied;
+          }, 2200);
+        }
+      } else {
+        alert('No se pudo copiar automáticamente. Intenta de nuevo.');
+      }
+    });
+  }
+
+  async copyTextWithFallback(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      try {
+        await navigator.clipboard.writeText(text);
+        return true;
+      } catch (_) {
+        // Continuar a respaldo clásico para orígenes file://
+      }
+    }
+
+    try {
+      const tempArea = document.createElement('textarea');
+      tempArea.value = text;
+      tempArea.setAttribute('readonly', '');
+      tempArea.style.position = 'fixed';
+      tempArea.style.top = '-9999px';
+      tempArea.style.opacity = '0';
+      document.body.appendChild(tempArea);
+      tempArea.focus();
+      tempArea.select();
+      const ok = document.execCommand('copy');
+      document.body.removeChild(tempArea);
+      return ok;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  focusNamesPanel() {
+    // Activar pestaña de Nombres en el panel compartido y desplazar suavemente
+    this.tabBtns.forEach(b => b.classList.remove('active'));
+    this.tabContents.forEach(c => c.classList.remove('active'));
+    const namesTabBtn = document.querySelector('.tab-btn[data-tab="participantsTab"]');
+    const namesTabContent = document.getElementById('participantsTab');
+    if (namesTabBtn) namesTabBtn.classList.add('active');
+    if (namesTabContent) namesTabContent.classList.add('active');
+
+    if (this.sharedSidebarSection) {
+      this.sharedSidebarSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    setTimeout(() => {
+      if (this.nameInput) this.nameInput.focus({ preventScroll: true });
+    }, 350);
+  }
+
   // --- GESTIÓN DE EVENTOS ---
   bindEvents() {
+    // Selector Principal de Modo (Ruleta / Creador de Equipos)
+    this.modeRouletteBtn.addEventListener('click', () => this.switchMainMode('roulette'));
+    this.modeTeamsBtn.addEventListener('click', () => this.switchMainMode('teams'));
+
+    // Controles del Creador de Equipos
+    this.splitByMembersBtn.addEventListener('click', () => this.setTeamSplitMode('members'));
+    this.splitByCountBtn.addEventListener('click', () => this.setTeamSplitMode('count'));
+
+    this.teamCustomCountInput.addEventListener('input', () => {
+      const val = parseInt(this.teamCustomCountInput.value, 10);
+      if (!isNaN(val) && val >= 2) {
+        this.teamTargetValue = Math.min(99, val);
+      }
+      this.renderQuickNumButtons();
+      this.updateTeamPreviewSummary();
+    });
+
+    this.teamLeftoverSelect.addEventListener('change', () => {
+      this.sounds.playClick();
+      this.updateTeamPreviewSummary();
+    });
+
+    this.teamNamingSelect.addEventListener('change', () => {
+      this.sounds.playClick();
+    });
+
+    this.jumpToNamesBtn.addEventListener('click', () => {
+      this.sounds.playClick();
+      this.focusNamesPanel();
+    });
+
+    this.generateTeamsBtn.addEventListener('click', () => this.generateTeamsWithAnimation());
+
     // Girar ruleta
     this.spinBtn.addEventListener('click', () => this.spin());
     this.centerSpinBtn.addEventListener('click', () => this.spin());
+    this.spinDurationSelect.addEventListener('change', () => this.sounds.playClick());
 
     // Mezclar y Restaurar
     this.shuffleBtn.addEventListener('click', () => this.shuffleItems());
     this.resetWheelBtn.addEventListener('click', () => {
+      this.sounds.playClick();
       if (confirm('¿Restablecer los nombres de ejemplo originales?')) {
         this.setDefaultItems();
         this.saveState();
         this.renderNamesList();
         this.drawWheel();
+        this.sounds.playPop();
       }
     });
 
@@ -2286,9 +4120,10 @@ class RouletteApp {
       this.addNewName();
     });
 
-    // Pestañas (Tabs)
+    // Pestañas (Tabs del panel lateral)
     this.tabBtns.forEach(btn => {
       btn.addEventListener('click', () => {
+        this.sounds.playClick();
         this.tabBtns.forEach(b => b.classList.remove('active'));
         this.tabContents.forEach(c => c.classList.remove('active'));
         btn.classList.add('active');
@@ -2299,12 +4134,14 @@ class RouletteApp {
 
     // Carga masiva
     this.bulkAddBtn.addEventListener('click', () => {
+      this.sounds.playClick();
       this.bulkTextarea.value = '';
       this.bulkModal.classList.add('active');
       this.bulkTextarea.focus();
     });
 
     this.cancelBulkBtn.addEventListener('click', () => {
+      this.sounds.playClick();
       this.bulkModal.classList.remove('active');
     });
 
@@ -2313,6 +4150,7 @@ class RouletteApp {
     // Limpiar todos
     this.clearAllBtn.addEventListener('click', () => {
       if (this.items.length === 0) return;
+      this.sounds.playClick();
       if (confirm('¿Estás seguro de que deseas borrar todos los participantes?')) {
         this.items = [];
         this.saveState();
@@ -2325,6 +4163,7 @@ class RouletteApp {
     this.copyHistoryBtn.addEventListener('click', () => this.copyHistoryToClipboard());
     this.clearHistoryBtn.addEventListener('click', () => {
       if (this.history.length === 0) return;
+      this.sounds.playClick();
       if (confirm('¿Borrar todo el historial de ganadores?')) {
         this.history = [];
         this.saveState();
@@ -2337,19 +4176,24 @@ class RouletteApp {
       const enabled = this.sounds.toggle();
       this.updateSoundBtnUI();
       this.saveState();
-      if (enabled) this.sounds.playTick();
+      if (enabled) this.sounds.playPop();
     });
 
     // Pantalla completa
-    this.fullscreenBtn.addEventListener('click', () => this.toggleFullscreen());
+    this.fullscreenBtn.addEventListener('click', () => {
+      this.sounds.playClick();
+      this.toggleFullscreen();
+    });
 
     // Modal de Ganador
     this.modalSpinAgainBtn.addEventListener('click', () => {
+      this.sounds.playClick();
       this.closeWinnerModal();
       setTimeout(() => this.spin(), 300);
     });
 
     this.modalHideWinnerBtn.addEventListener('click', () => {
+      this.sounds.playClick();
       if (this.lastWinner) {
         this.toggleItemActive(this.lastWinner.id, false);
       }
@@ -2357,10 +4201,12 @@ class RouletteApp {
     });
 
     this.modalKeepAndCloseBtn.addEventListener('click', () => {
+      this.sounds.playClick();
       this.closeWinnerModal();
     });
 
     this.modalCloseXBtn.addEventListener('click', () => {
+      this.sounds.playClick();
       this.closeWinnerModal();
     });
 
@@ -2374,11 +4220,12 @@ class RouletteApp {
 
     // Atajos de teclado
     window.addEventListener('keydown', (e) => {
-      if (e.code === 'Space' && !['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
-        e.preventDefault();
+      if (e.code === 'Space' && !['INPUT', 'TEXTAREA', 'SELECT', 'BUTTON'].includes(document.activeElement.tagName)) {
         if (this.winnerModal.classList.contains('active')) {
+          e.preventDefault();
           this.closeWinnerModal();
-        } else {
+        } else if (this.currentMainMode === 'roulette') {
+          e.preventDefault();
           this.spin();
         }
       }
@@ -2425,6 +4272,7 @@ class RouletteApp {
 
     this.items.push(newItem);
     this.nameInput.value = '';
+    this.sounds.playPop();
     this.saveState();
     this.renderNamesList();
     this.drawWheel();
@@ -2455,6 +4303,7 @@ class RouletteApp {
     });
 
     if (addedCount > 0) {
+      this.sounds.playPop();
       this.saveState();
       this.renderNamesList();
       this.drawWheel();
@@ -2468,6 +4317,7 @@ class RouletteApp {
     this.items.forEach((item, idx) => {
       item.color = COLOR_PALETTE[idx % COLOR_PALETTE.length];
     });
+    this.sounds.playClick();
     this.saveState();
     this.renderNamesList();
     this.drawWheel();
@@ -2478,6 +4328,7 @@ class RouletteApp {
     if (!item) return;
 
     item.active = forceState !== null ? forceState : !item.active;
+    this.sounds.playClick();
     this.saveState();
     this.renderNamesList();
     this.drawWheel();
@@ -2501,8 +4352,8 @@ class RouletteApp {
     this.renderNamesList();
     this.drawWheel();
 
-    // Pequeño sonido de barajado
-    this.sounds.playTick();
+    // Sonido alegre de barajado
+    this.sounds.playPop();
   }
 
   getActiveItems() {
@@ -2516,6 +4367,7 @@ class RouletteApp {
 
     this.activeCountBadge.textContent = activeItems.length;
     this.listInfoText.textContent = `${activeItems.length} activos de ${this.items.length}`;
+    this.updateTeamPreviewSummary();
 
     if (this.items.length === 0) {
       this.namesList.innerHTML = `
@@ -2599,20 +4451,23 @@ class RouletteApp {
     const lines = this.history.map((h, i) => `${this.history.length - i}. ${h.name} (${h.time})`);
     const text = "🏆 GANADORES DE LA RULETA 🏆\n" + lines.join("\n");
 
-    navigator.clipboard.writeText(text).then(() => {
-      alert('¡Lista de ganadores copiada al portapapeles! 📋');
-    }).catch(() => {
-      alert('No se pudo copiar automáticamente.');
+    this.copyTextWithFallback(text).then(ok => {
+      if (ok) {
+        this.sounds.playPop();
+        alert('¡Lista de ganadores copiada al portapapeles! 📋');
+      } else {
+        alert('No se pudo copiar automáticamente.');
+      }
     });
   }
 
   // --- DIBUJADO DE LA RULETA EN CANVAS ---
   drawWheel() {
     const ctx = this.ctx;
-    const size = this.displaySize;
+    const size = this.displaySize || 540;
     const cx = size / 2;
     const cy = size / 2;
-    const radius = cx - 18;
+    const radius = Math.max(80, cx - (size < 400 ? 14 : 18));
 
     ctx.clearRect(0, 0, size, size);
 
@@ -2621,11 +4476,12 @@ class RouletteApp {
 
     // Si no hay participantes activos
     if (count === 0) {
-      this.drawEmptyWheel(ctx, cx, cy, radius);
+      this.drawEmptyWheel(ctx, cx, cy, radius, size);
       return;
     }
 
     const sliceAngle = (2 * Math.PI) / count;
+    const isCompactWheel = size < 420;
 
     ctx.save();
     ctx.translate(cx, cy);
@@ -2653,33 +4509,32 @@ class RouletteApp {
       ctx.fill();
 
       // Borde sutil entre rebanadas
-      ctx.lineWidth = 2;
+      ctx.lineWidth = isCompactWheel ? 1.5 : 2;
       ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
       ctx.stroke();
 
       // Clavijas perimetrales (pegs) en cada división
-      const pegX = Math.cos(startAngle) * (radius - 8);
-      const pegY = Math.sin(startAngle) * (radius - 8);
+      const pegX = Math.cos(startAngle) * (radius - 7);
+      const pegY = Math.sin(startAngle) * (radius - 7);
       ctx.beginPath();
-      ctx.arc(pegX, pegY, 4, 0, 2 * Math.PI);
+      ctx.arc(pegX, pegY, isCompactWheel ? 3.2 : 4, 0, 2 * Math.PI);
       ctx.fillStyle = '#ffffff';
       ctx.shadowColor = 'rgba(0,0,0,0.5)';
       ctx.shadowBlur = 4;
       ctx.fill();
       ctx.shadowBlur = 0;
 
-      // 2. Texto de la rebanada
+      // 2. Texto de la rebanada (adaptado a móvil y escritorio)
       ctx.save();
       ctx.rotate(startAngle + sliceAngle / 2);
       ctx.textAlign = 'right';
       ctx.textBaseline = 'middle';
 
-      // Ajuste dinámico de fuente según número de items
-      let fontSize = 20;
-      if (count > 24) fontSize = 12;
-      else if (count > 16) fontSize = 14;
-      else if (count > 10) fontSize = 16;
-      else if (count > 6) fontSize = 18;
+      let fontSize = isCompactWheel ? 16 : 20;
+      if (count > 24) fontSize = isCompactWheel ? 10.5 : 12;
+      else if (count > 16) fontSize = isCompactWheel ? 12 : 14;
+      else if (count > 10) fontSize = isCompactWheel ? 13.5 : 16;
+      else if (count > 6) fontSize = isCompactWheel ? 15 : 18;
 
       ctx.font = `bold ${fontSize}px 'Outfit', sans-serif`;
       
@@ -2688,9 +4543,12 @@ class RouletteApp {
       ctx.shadowBlur = 6;
       ctx.fillStyle = '#ffffff';
 
-      // Truncar texto si es muy largo para el radio
+      // Truncar texto respetando el radio del botón central (76px en móvil / 105px en PC)
       let label = item.name;
-      const maxTextWidth = radius - 80;
+      const innerClearance = isCompactWheel ? 54 : 80;
+      const outerPad = isCompactWheel ? 18 : 26;
+      const maxTextWidth = Math.max(45, radius - innerClearance);
+
       if (ctx.measureText(label).width > maxTextWidth) {
         while (ctx.measureText(label + '…').width > maxTextWidth && label.length > 3) {
           label = label.slice(0, -1);
@@ -2698,19 +4556,19 @@ class RouletteApp {
         label += '…';
       }
 
-      ctx.fillText(label, radius - 26, 0);
+      ctx.fillText(label, radius - outerPad, 0);
       ctx.restore();
     }
 
     ctx.restore();
 
     // 3. Anillo exterior con luces estilo casino
-    this.drawArcadeRim(ctx, cx, cy, radius, count);
+    this.drawArcadeRim(ctx, cx, cy, radius, isCompactWheel);
   }
 
   // Borde exterior decorativo con luces LED parpadeantes
-  drawArcadeRim(ctx, cx, cy, radius, count) {
-    const rimWidth = 14;
+  drawArcadeRim(ctx, cx, cy, radius, isCompactWheel = false) {
+    const rimWidth = isCompactWheel ? 11 : 14;
     ctx.save();
     
     // Aro exterior metálico / dorado
@@ -2741,7 +4599,7 @@ class RouletteApp {
         : i % 2 === 0;
 
       ctx.beginPath();
-      ctx.arc(lx, ly, 3.5, 0, 2 * Math.PI);
+      ctx.arc(lx, ly, isCompactWheel ? 2.8 : 3.5, 0, 2 * Math.PI);
       ctx.fillStyle = isLit ? '#ffffff' : '#ffd700';
       if (isLit) {
         ctx.shadowColor = '#ffffff';
@@ -2754,7 +4612,7 @@ class RouletteApp {
     ctx.restore();
   }
 
-  drawEmptyWheel(ctx, cx, cy, radius) {
+  drawEmptyWheel(ctx, cx, cy, radius, size = 540) {
     ctx.save();
     ctx.beginPath();
     ctx.arc(cx, cy, radius, 0, 2 * Math.PI);
@@ -2768,7 +4626,7 @@ class RouletteApp {
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillStyle = '#a0aec0';
-    ctx.font = "bold 18px 'Outfit', sans-serif";
+    ctx.font = `bold ${size < 400 ? 14 : 18}px 'Outfit', sans-serif`;
     ctx.fillText('¡Agrega participantes para girar!', cx, cy);
     ctx.restore();
   }
@@ -2788,6 +4646,7 @@ class RouletteApp {
       return;
     }
 
+    this.sounds.playPop();
     this.isSpinning = true;
     this.setControlsDisabled(true);
 
@@ -2809,8 +4668,7 @@ class RouletteApp {
     const sliceAngle = (2 * Math.PI) / activeItems.length;
     const topAngle = 1.5 * Math.PI; // 270 grados (donde apunta la aguja superior)
 
-    // Curva de desaceleración realista: easeOutQuint o easeOutCubic
-    const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
+    // Curva de desaceleración realista: easeOutQuint
     const easeOutQuint = (t) => 1 - Math.pow(1 - t, 5);
 
     const animate = (currentTime) => {
